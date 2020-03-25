@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.eet3107.inscripciones.entidades.Alumno;
 import com.eet3107.inscripciones.services.AlumnoServiceImpl;
@@ -43,21 +45,26 @@ public class InscripcionesController {
 	}
 	
 	@PostMapping("/carga")
-	public String cargar(@Valid @ModelAttribute("alumno")Alumno alumno,BindingResult result,ModelMap modelMap) {
+	public RedirectView cargar(@Valid @ModelAttribute("alumno")Alumno alumno,BindingResult result,ModelMap modelMap, RedirectAttributes redAttr) {
 		if(result.hasErrors()) {
 			modelMap.addAttribute("alumno", alumno);
 			modelMap.addAttribute("tab1Active","active");
 			modelMap.addAttribute("invalid","is-invalid");
-			return "index";			
+			redAttr.addAttribute("alert", "Ocurrió un error en la carga");
+			redAttr.addAttribute("type","danger");
+			return new RedirectView("/");			
 		}else {
 			try {
 				service.crearAlumno(alumno);
-				modelMap.addAttribute("success","cargado exitosamente!!!");
-				return "redirect:/";
+				redAttr.addAttribute("alert", "carga exitosa");
+				redAttr.addAttribute("type","success");
+				return new RedirectView("/");
 			} catch (Exception e) {
 				modelMap.addAttribute("error",e.getMessage());
 				modelMap.addAttribute("tab1Active","active");
-				return "index";
+				redAttr.addAttribute("alert", "Ocurrió un error en la carga");
+				redAttr.addAttribute("type","danger");
+				return new RedirectView("/");
 			}
 			
 		}
@@ -102,7 +109,7 @@ public class InscripcionesController {
 		}
 	
 	@GetMapping("/delete")
-	public String deleteAlumno(Model model,@RequestParam(name="id")int id) {
+	public String deleteAlumno(Model model,@RequestParam(name="id",required=false)int id) {
 		try {
 			service.deleteAlumno(id);
 			model.addAttribute("success","Borrado con éxito");

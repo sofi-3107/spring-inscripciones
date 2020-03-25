@@ -10,11 +10,11 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
-    <title>Formulario Cargado</title>
+    <title>Lista</title>
   </head>
   <body>
-   <div th:if="${success}" th:text="${success}"class="alert alert-success " role="alert">
-  	<i class="fas fa-smile-wink"></i>
+   <div th:if="${param.alert}" th:text="${param.alert}"class="alert " th:classappend="${param.type}==danger?alert-danger:alert-success" role="alert">
+  		<i class="fas fa-smile-wink"></i>
 	</div>
     
     <table class="table" >
@@ -30,31 +30,17 @@
   </thead>
   <tbody>
     <tr th:each="alumno: ${alumnos}">
-      <td id="putoId" type="hidden" name="id" th:value="${alumno.id}"></td>
+      <td type="hidden" name="id" th:value="${alumno.id}"></td>
       <td th:text="${alumno.nombre}"></td>
       <td th:text="${alumno.apellido}"></td>
       <td th:text="${alumno.dni}"></td>
       <td><a href="#" th:href="@{/editar}"><i class="fas fa-edit"></i></a></td>
-     <td><a href="#"th:href="@{/delete(id=${alumno.id})}"data-target="#deleteModal" data-toggle="modal" ><i class="fas fa-trash-alt"></i></a></td>
+     <td><a th:href="@{/delete(id=${alumno.id})}"  class="delete"><i class="fas fa-trash-alt"></i></a></td>
     </tr>
   </tbody>
 </table>
 <a th:href="@{/carga}"><button type="button" class="btn btn-primary">Cargar</button></a>
 
-<!-- Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-       ¿Confirma que desea eliminar al alumno?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary"th:onclick="'loadContent(\''+ ${data.path} +'\')'"id="deleteBtn">Aceptar</button>
-      </div>
-    </div>
-  </div>
-</div>
 
     <!-- Opcional: enlazando el JavaScript de Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
