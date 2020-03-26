@@ -1,6 +1,8 @@
 package com.eet3107.inscripciones.services;
 
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,14 +48,25 @@ public class AlumnoServiceImpl implements AlumnoService{
 	}
 
 	@Override
-	public Alumno findById(Alumno alumno) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Alumno findById(int id) throws Exception {		
+		return rep.findById(id);
 	}
 
 	@Override
 	public void deleteAlumno(int id) throws Exception {		
 		  rep.deleteById(id);
+	}
+
+	@Override
+	public Alumno actualizarAlumno(Alumno alumno) throws Exception {	
+		Alumno alumnoUpdated=rep.findById(alumno.getId());
+		alumnoUpdated.setApellido(alumno.getApellido());
+		alumnoUpdated.setNombre(alumno.getNombre());
+		alumnoUpdated.setDni(alumno.getDni());
+		alumnoUpdated.setMail(alumno.getMail());
+		alumnoUpdated.setNacimiento(alumno.getNacimiento());
+		alumnoUpdated.setTelefono(alumno.getTelefono());
+		return rep.save(alumno);
 	}
 
 

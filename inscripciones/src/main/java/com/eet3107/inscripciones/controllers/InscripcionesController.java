@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -40,7 +41,7 @@ public class InscripcionesController {
 	public String getRoot(Model model) {
 		model.addAttribute("tab1Active","active");
 		model.addAttribute("alumno", new Alumno());
-		model.addAttribute("editar", "false");
+		model.addAttribute("editar", 0);
 		return "index";
 	}
 	
@@ -102,11 +103,43 @@ public class InscripcionesController {
 	
 	
 	
-	@PostMapping("/editar")
-		public String editarAlumno(Model model) {
-		model.addAttribute("editar", "true");
-			return "";
+	@GetMapping("/editar")
+		public String editarAlumno(Model model,@RequestParam(name="id",required=false)int id) {
+		try {
+			Alumno alumno=service.findById(id);
+			model.addAttribute("alumno",alumno);
+			model.addAttribute("editar",1);
+			model.addAttribute("tab1Active","active");
+			return "index";
+		} catch (Exception e) {
+			model.addAttribute("tab1Active","active");
+			//model.addAttribute("error",e.getMessage());
 		}
+			return "index";
+		}
+	
+	@PostMapping("/editar")
+	
+	public RedirectView editarAlumno(@Valid @ModelAttribute("alumno")Alumno alumno,BindingResult result,ModelMap modelMap, RedirectAttributes redAttr) {
+		if(result.hasErrors()) {
+			modelMap.addAttribute("alumno", alumno);
+			modelMap.addAttribute("tab1Active","active");
+			modelMap.addAttribute("invalid","is-invalid");
+			redAttr.addAttribute("alert", "Ocurrió un error en la actualización");
+			redAttr.addAttribute("type","danger");
+			return new RedirectView("/editar");			
+		}else {
+			try {
+				service.actualizarAlumno(alumno);
+				return new RedirectView("/");
+			} catch (Exception e) {
+				modelMap.addAttribute("error",e.getMessage());
+				return new RedirectView("index");	
+			}
+			
+		}
+	}
+	
 	
 	@GetMapping("/delete")
 	public String deleteAlumno(Model model,@RequestParam(name="id",required=false)int id) {

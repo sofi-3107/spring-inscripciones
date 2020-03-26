@@ -38,8 +38,9 @@
 							class="tab-pane" role="tabpanel" id="tab-1">
 							<div class="container px-4" style="padding: 30px;">
 								<form method="post" th:object="${alumno}" action="#"
-									th:action="${editar}?@{/editar}:@{/carga}">
+									th:action="${editar}==1?@{/editar}:@{/carga}">
 									<h2 class="text-center">Datos Personales</h2>
+									<input type="hidden" name="id" th:value="${alumno.id}"></input>
 									<div class="form-group">
 										<input th:field="*{apellido}" class="form-control"th:classappend="${#fields.hasErrors('apellido')}?is-invalid:form-control"type="text" 
 											name="apellido" placeholder="Apellido" th:value="${apellido}" rows="12"  > 

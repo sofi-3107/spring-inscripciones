@@ -15,5 +15,7 @@ public interface AlumnoRepository extends CrudRepository<Alumno,Integer>{
 	
 	public Alumno findByNombreAndApellido(String nombre,String apellido);
 	
+	public Alumno findById(int id);
+	
 	
 }

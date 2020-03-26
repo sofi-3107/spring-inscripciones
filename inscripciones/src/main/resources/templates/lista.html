@@ -34,7 +34,7 @@
       <td th:text="${alumno.nombre}"></td>
       <td th:text="${alumno.apellido}"></td>
       <td th:text="${alumno.dni}"></td>
-      <td><a href="#" th:href="@{/editar}"><i class="fas fa-edit"></i></a></td>
+      <td><a href="#" th:href="@{/editar(id=${alumno.id})}"><i class="fas fa-edit"></i></a></td>
      <td><a th:href="@{/delete(id=${alumno.id})}"  class="delete"><i class="fas fa-trash-alt"></i></a></td>
     </tr>
   </tbody>

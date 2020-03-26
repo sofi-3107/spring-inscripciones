@@ -43,6 +43,7 @@ public class Alumno {
 	private String mail;
 	
 	@Column 
+	@NotBlank(message="La fecha de nacimiento es obligatoria")
 	private Date nacimiento;
 
 	public String getDni() {
