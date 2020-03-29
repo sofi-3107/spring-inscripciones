@@ -24,6 +24,7 @@
       <th scope="col">Nombre</th>
       <th scope="col">Apellido</th>
       <th scope="col">Dni</th>
+       <th scope="col">Fecha de Nacimiento</th>
       <th scope="col">Editar</th>
       <th scope="col">Eliminar</th>
     </tr>
@@ -34,6 +35,8 @@
       <td th:text="${alumno.nombre}"></td>
       <td th:text="${alumno.apellido}"></td>
       <td th:text="${alumno.dni}"></td>
+      <td th:text="${#dates.format(alumno.nacimiento,'dd/MM/yyyy')}"></td>
+      <!--<td th:text="${alumno.nacimiento}"></td>-->
       <td><a href="#" th:href="@{/editar(id=${alumno.id})}"><i class="fas fa-edit"></i></a></td>
      <td><a th:href="@{/delete(id=${alumno.id})}"  class="delete"><i class="fas fa-trash-alt"></i></a></td>
     </tr>

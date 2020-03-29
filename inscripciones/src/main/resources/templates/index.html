@@ -75,7 +75,7 @@
 									</div>
 									<p>Fecha de Nacimiento:</p>
 									<div class="form-group">
-										<input class="form-control" th:classappend="${#fields.hasErrors('nacimiento')}?is-invalid:form-control"th:value="${nacimiento}" th:field="*{nacimiento}"type="date">
+										<input class="form-control" th:classappend="${#fields.hasErrors('nacimiento')}?is-invalid:form-control"th:value="${nacimiento}" th:field="*{nacimiento}"type="date" required>
 										<small
 											class="form-text text-danger" th:if="${#fields.hasErrors('nacimiento')}" th:errors="*{nacimiento}">Please
 											enter a correct email address.</small>
