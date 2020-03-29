@@ -45,6 +45,9 @@ public class Alumno {
 	@Column 
 	@Temporal(TemporalType.DATE)
 	private Date nacimiento;
+	
+	//@DateTimeFormat(pattern = "yyyy-MM-dd")
+	//Usar tipo de dato String en vez de datePROBAR
 
 	public String getDni() {
 		return dni;

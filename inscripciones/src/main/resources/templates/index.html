@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
 <meta charset="utf-8">
@@ -14,6 +14,8 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/css/Footer-Dark.css">
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 <link rel="stylesheet" href="assets/css/Header-Blue.css">
 <link rel="stylesheet" href="assets/css/styles.css">
 </head>
@@ -42,46 +44,67 @@
 									<h2 class="text-center">Datos Personales</h2>
 									<input type="hidden" name="id" th:value="${alumno.id}"></input>
 									<div class="form-group">
-										<input th:field="*{apellido}" class="form-control"th:classappend="${#fields.hasErrors('apellido')}?is-invalid:form-control"type="text" 
-											name="apellido" placeholder="Apellido" th:value="${apellido}" rows="12"  > 
-											<small
-											class="form-text text-danger" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}">Please
+										<input th:field="*{apellido}" class="form-control"
+											th:classappend="${#fields.hasErrors('apellido')}?is-invalid:form-control"
+											type="text" name="apellido" placeholder="Apellido"
+											th:value="${apellido}" rows="12"> <small
+											class="form-text text-danger"
+											th:if="${#fields.hasErrors('apellido')}"
+											th:errors="*{apellido}">Please enter a correct email
+											address.</small>
+									</div>
+									<div class="form-group">
+										<input class="form-control"
+											th:classappend="${#fields.hasErrors('nombre')}?is-invalid:form-control"
+											type="text" name="nombre" th:field="*{nombre}"
+											th:value="${nombre}" placeholder="Nombre" rows="12">
+										<small class="form-text text-danger"
+											th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Please
 											enter a correct email address.</small>
 									</div>
 									<div class="form-group">
-										<input class="form-control"th:classappend="${#fields.hasErrors('nombre')}?is-invalid:form-control" type="text" name="nombre"
-											th:field="*{nombre}" th:value="${nombre}"placeholder="Nombre" rows="12">
-											<small
-											class="form-text text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Please
+										<input class="form-control"
+											th:classappend="${#fields.hasErrors('dni')}?is-invalid:form-control"
+											type="text" name="dni" th:field="*{dni}" th:value="${dni}"
+											placeholder="DNI" rows="12"> <small
+											class="form-text text-danger"
+											th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}">Please
 											enter a correct email address.</small>
 									</div>
 									<div class="form-group">
-										<input class="form-control" th:classappend="${#fields.hasErrors('dni')}?is-invalid:form-control" type="text" name="dni"
-											th:field="*{dni}"th:value="${dni}" placeholder="DNI" rows="12">
-											<small
-											class="form-text text-danger" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}">Please
-											enter a correct email address.</small>
+										<input class="form-control"
+											th:classappend="${#fields.hasErrors('telefono')}?is-invalid:form-control"
+											type="text" name="telefono" th:field="*{telefono}"
+											placeholder="Teléfono" th:value="${telefono}" rows="12">
+										<small class="form-text text-danger"
+											th:if="${#fields.hasErrors('telefono')}"
+											th:errors="*{telefono}">Ingrese un telefono</small>
 									</div>
 									<div class="form-group">
-										<input class="form-control" th:classappend="${#fields.hasErrors('telefono')}?is-invalid:form-control"type="text" name="telefono"
-											th:field="*{telefono}" placeholder="Teléfono"th:value="${telefono}" rows="12">
-											<small
-											class="form-text text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">Ingrese un telefono</small>
-									</div>
-									<div class="form-group">
-										<input class="form-control" th:classappend="${#fields.hasErrors('mail')}?is-invalid:form-control"type="email" name="email" th:value="${mail}"th:field="*{mail}" placeholder="Email"><small
-											class="form-text text-danger" th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}">Please
+										<input class="form-control"
+											th:classappend="${#fields.hasErrors('mail')}?is-invalid:form-control"
+											type="email" name="email" th:value="${mail}"
+											th:field="*{mail}" placeholder="Email"><small
+											class="form-text text-danger"
+											th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}">Please
 											enter a correct email address.</small>
 									</div>
 									<p>Fecha de Nacimiento:</p>
 									<div class="form-group">
-										<input class="form-control" th:classappend="${#fields.hasErrors('nacimiento')}?is-invalid:form-control"th:value="${nacimiento}" th:field="*{nacimiento}"type="date" required>
-										<small
-											class="form-text text-danger" th:if="${#fields.hasErrors('nacimiento')}" th:errors="*{nacimiento}">Please
-											enter a correct email address.</small>
+										<input class="form-control"
+											th:classappend="${#fields.hasErrors('nacimiento')}?is-invalid:form-control"
+											th:value="${#dates.format(nacimiento,'dd-MM-yyyy')}"
+											th:field="*{nacimiento}" th:type="text" id="fechaNac"
+											required> <small class="form-text text-danger"
+											id="fechaNulaError "
+											th:if="${#fields.hasErrors('nacimiento')}"
+											th:errors="*{nacimiento}">Please enter a correct
+											email address.</small>
 									</div>
 									<button type="submit" class="btn btn-primary ">Agregar</button>
 								</form>
+								<a th:href="@{/crearPDF}"><button type="button"
+										class="btn btn-primary">Exportar a PDF</button></a>
 							</div>
 						</div>
 						<div class="tab-pane" role="tabpanel" id="tab-2">
@@ -100,6 +123,10 @@
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 	<script src="assets/js/bs-animation.js"></script>
+	head>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script th:src="@{js/javascripSofi.js}"></script>
 </body>
 

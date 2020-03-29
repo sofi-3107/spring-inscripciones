@@ -29,8 +29,12 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import com.eet3107.inscripciones.entidades.Alumno;
+import com.eet3107.inscripciones.reports.ExportarExcelCsv;
 import com.eet3107.inscripciones.services.AlumnoServiceImpl;
-
+import com.google.gson.Gson;
+import com.itextpdf.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.pdf.PdfWriter;
 @Controller
 @RequestMapping("/")
 public class InscripcionesController {
@@ -161,4 +165,34 @@ public class InscripcionesController {
 		engine.setTemplateResolver(templateResolver);
 		return engine;
 	}
+	
+	@GetMapping("/crearCsv")
+	public String crearCsv(RedirectAttributes redAttr) {
+		ExportarExcelCsv.crearArchivoCSV("todoelMundo", service.findAll());
+		redAttr.addAttribute("alert", "Generación exitosa,\n Tu archivo CSV se guardo en Documents");
+		return "redirect:/";
+		
+	}
+	
+	@GetMapping("/crearPDF")
+	public void crearPdf() {
+		Document doc=new Document();
+	}
+	
+	@GetMapping("/GetAjax")
+	
+	public String returnGetData() {
+		try {
+			Alumno alumno=service.findById(1);
+			Gson gson=new Gson();
+			String JSON=gson.toJson(alumno);
+			return "redirect:/?alumno=alumno";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 }
