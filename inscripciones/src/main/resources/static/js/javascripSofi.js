@@ -3,19 +3,52 @@ $(function() {
 		confirm("desea eliminar al alumno??");
 	});
 
+	// Permite ocultar la alerta verde luego de una carga.
 	$(".alert").click(function() {
 		$(".alert").hide("slow");
 	});
 	// PRUEBA AJAX
-	$("#ajaxbtn").click(function() {
-		$.get("url", function(data) {
-			console.log(data[0]);
-		});
+	$("#ajaxBtn").click(
+			function(data) {
 
+				$.ajax({
+					url : "/MyJson",
+					type : "GET",
+					dataType : "json",
+					success : function(data) {
+						$.each(data, function(key, value) {
+							console.log(value.nombre + "\n" + value.apellido
+									+ "\n" + value.dni);
+						});
+
+					},
+					error : function(e) {
+						console.log("There was an error, could not complete: "
+								+ e);
+					},
+				});
+
+			});
+	// PRUEBA JSPDF
+
+	$("#crearPdf").click(function() {
+		var doc = new jsPDF();
+		doc.text(60, 20, 'Datos Personales del alumno');
+		doc.text(20, 30, 'Apellido: '+$("input[name='apellido']").val());
+		doc.text(20, 40, 'Nombre: '+$("input[name='nombre']").val());
+		doc.text(20, 50, 'DNI: '+$("input[name='dni']").val());
+		doc.text(20,60, 'Edad: ');
+		doc.text(40,60,$("input[name='nacimiento']").val());
+		doc.text(20, 90, 'Firma del Tutor: ________________________');
+		/* Add new page
+		doc.addPage();
+		doc.text(20, 20, 'Visita programacion.net');*/
+
+		// Save the PDF
+		doc.save('formulario.pdf');
 	});
 
 	// DATEPICKER JQUERY.U, CONFIGURADO
-
 	$("#fechaNac").datepicker(
 			{
 				changeMonth : true,
@@ -51,7 +84,5 @@ $(function() {
 		console.log($("#fechaNac").val());
 
 	});
-
-	
 
 });

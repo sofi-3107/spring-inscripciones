@@ -37,8 +37,7 @@ public class AlumnoServiceImpl implements AlumnoService{
 
 	@Override
 	public Alumno findAlumnoByDni(Alumno alumno) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return rep.findByDni(alumno.getDni());
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -20,7 +21,10 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
@@ -31,13 +35,16 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 import com.eet3107.inscripciones.entidades.Alumno;
 import com.eet3107.inscripciones.reports.ExportarExcelCsv;
 import com.eet3107.inscripciones.services.AlumnoServiceImpl;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.*;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
 @Controller
 @RequestMapping("/")
 public class InscripcionesController {
+	
+	
+	public static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
 	@Autowired
 	AlumnoServiceImpl service;
@@ -179,20 +186,18 @@ public class InscripcionesController {
 		Document doc=new Document();
 	}
 	
-	@GetMapping("/GetAjax")
-	
-	public String returnGetData() {
+	@RequestMapping(value="/MyJson",method=RequestMethod.GET ,produces={"application/json"})
+	public @ResponseBody Iterable<Alumno> returnGet () {
 		try {
-			Alumno alumno=service.findById(1);
-			Gson gson=new Gson();
-			String JSON=gson.toJson(alumno);
-			return "redirect:/?alumno=alumno";
+			
+			return service.findAll();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		}
+		return service.findAll();
 		
-		return null;
+		
 	}
 	
 }

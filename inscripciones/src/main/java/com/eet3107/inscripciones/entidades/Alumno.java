@@ -47,7 +47,7 @@ public class Alumno {
 	private Date nacimiento;
 	
 	//@DateTimeFormat(pattern = "yyyy-MM-dd")
-	//Usar tipo de dato String en vez de datePROBAR
+	//Usar tipo de dato String en vez de datePROBAR	
 
 	public String getDni() {
 		return dni;
