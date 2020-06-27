@@ -1,17 +1,13 @@
-package com.eet3107.inscripciones;
-
+package com.example.demo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
 @SpringBootTest
-class InscripcionesApplicationTests {
+class SeminarioApplicationTests {
 
 	@Test
 	void contextLoads() {
-
-		
 	}
 
 }

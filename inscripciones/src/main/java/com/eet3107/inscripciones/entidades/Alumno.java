@@ -1,113 +1,48 @@
 package com.eet3107.inscripciones.entidades;
 
-import java.time.LocalDate;
 import java.util.Date;
+import java.util.Set;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-public class Alumno {
-	
-	@Column
-	@Id 
-	@GeneratedValue
-	private int id;
-	
-	@Column
-	@NotBlank(message="Este campo es obligatorio")
-	private String nombre;
-	
-	@Column
-	@NotBlank(message="Este campo es obligatorio")
-	private String apellido;
-	
-	@Column
-	@NotBlank(message="Este campo es obligatorio")
-	private String dni;
-	
-	@Column
-	private String telefono;
-	
-	@Column
-	@Email(message="Introduce un correo valido")
-	private String mail;
-	
-	@Column 
+@Table(name = "alumno")
+@Getter@Setter@ToString
+@NoArgsConstructor @EqualsAndHashCode
+public class Alumno extends Persona {
+
+	private static final long serialVersionUID = 1L;
+
+	@ManyToOne
+	@JoinColumn(name = "idTutor")
+	private Tutor tutor;
+
 	@Temporal(TemporalType.DATE)
 	private Date nacimiento;
-	
-	//@DateTimeFormat(pattern = "yyyy-MM-dd")
-	//Usar tipo de dato String en vez de datePROBAR	
 
-	public String getDni() {
-		return dni;
-	}
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn
+	private Legajo legajo;
 
-	public void setDni(String dni) {
-		this.dni = dni;
-	}
-
-	public String getTelefono() {
-		return telefono;
-	}
-
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
-
-	public String getMail() {
-		return mail;
-	}
-
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
-
-	public Date getNacimiento() {
-		return nacimiento;
-	}
-
-	public void setNacimiento(Date nacimiento) {
-		this.nacimiento = nacimiento;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getApellido() {
-		return apellido;
-	}
-
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
-	}
-	
-	public Alumno() {
-		
-	}
+//	@ManyToMany(cascade = CascadeType.ALL)
+//	@JoinTable(name = "alumno_contactoEm", joinColumns = { @JoinColumn(name = "id_alumno") }, inverseJoinColumns = {
+//			@JoinColumn(name = "id_contactoEm") })
+//	private Set<ContactoDeEmergencia> contactosEm;
 
 
 }

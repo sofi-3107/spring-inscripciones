@@ -1,10 +1,9 @@
-package com.eet3107.inscripciones.services;
+package com.eet3107.inscripciones.services.interfaces;
 
-import java.util.Optional;
+
 
 import com.eet3107.inscripciones.entidades.Alumno;
 
-import antlr.collections.List;
 
 public interface AlumnoService {
 

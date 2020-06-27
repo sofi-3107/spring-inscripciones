@@ -12,4 +12,5 @@ import com.eet3107.inscripciones.entidades.Usuario;
 public interface UsuarioRepository extends CrudRepository<Usuario,Integer>{
 
 	public Usuario findByUserName(String userName);
+	public Usuario findById(int id);
 }

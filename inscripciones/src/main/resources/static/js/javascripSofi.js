@@ -1,4 +1,29 @@
 $(function() {
+
+		/*validation invalid disable button*/
+		
+		function isAnyInvalid(){
+				var inputs=$('input');
+				inputs.each(function(){		
+						$(this).change(function(){
+							if($(this).is(': invalid')){
+								console.log('hay un campo invalido');
+									$('.btn').attr('disabled',true);
+							}	else{
+									$('.btn').attr('disabled',false);
+							}
+					});
+				});
+		}
+		
+
+
+
+
+
+
+
+
 	$(".delete").click(function() {
 		confirm("desea eliminar al alumno??");
 	});
@@ -85,4 +110,8 @@ $(function() {
 
 	});
 
-});
+
+
+
+
+	});//fin doc

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-<title>Prorotipo Diseño GUI inscripciones</title>
+<title>Prorotipo Dise�o GUI inscripciones</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <link rel="stylesheet"
@@ -23,101 +23,8 @@
 <body>
 	<div data-bs-parallax-bg="true"
 		style="height: 300px; background-image: url(https://unsplash.it/1800/900?image=1051); background-position: center; background-size: cover;"></div>
-	<div class="container">
-		<div class="row">
-			<div class="col">
-				<div>
-					<ul class="nav nav-tabs">
-						<li class="nav-item"><a class="nav-link active" role="tab"
-							data-toggle="tab" href="#tab-1">Datos Personales</a></li>
-						<li class="nav-item"><a class="nav-link" role="tab"
-							data-toggle="tab" href="#tab-2">Datos del Tutor</a></li>
-						<li class="nav-item"><a class="nav-link" role="tab"
-							data-toggle="tab" href="#tab-3">Datos de Legajo</a></li>
-					</ul>
-					<div class="tab-content">
-						<div th:if="${tab1Active != null}" th:classappend="${tab1Active}"
-							class="tab-pane" role="tabpanel" id="tab-1">
-							<div class="container id="form-container" px-4" style="padding: 30px;">
-								<form method="post" id="formulario" th:object="${alumno}" action="#"
-									th:action="${editar}==1?@{/editar}:@{/carga}">
-									<h2 class="text-center">Datos Personales</h2>
-									<input type="hidden" name="id" th:value="${alumno.id}"></input>
-									<div class="form-group">
-										<input th:field="*{apellido}" class="form-control"
-											th:classappend="${#fields.hasErrors('apellido')}?is-invalid:form-control"
-											type="text" name="apellido" placeholder="Apellido"
-											th:value="${apellido}" rows="12"> <small
-											class="form-text text-danger"
-											th:if="${#fields.hasErrors('apellido')}"
-											th:errors="*{apellido}">Please enter a correct email
-											address.</small>
-									</div>
-									<div class="form-group">
-										<input class="form-control"
-											th:classappend="${#fields.hasErrors('nombre')}?is-invalid:form-control"
-											type="text" name="nombre" th:field="*{nombre}"
-											th:value="${nombre}" placeholder="Nombre" rows="12">
-										<small class="form-text text-danger"
-											th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Please
-											enter a correct email address.</small>
-									</div>
-									<div class="form-group">
-										<input class="form-control"
-											th:classappend="${#fields.hasErrors('dni')}?is-invalid:form-control"
-											type="text" name="dni" th:field="*{dni}" th:value="${dni}"
-											placeholder="DNI" rows="12"> <small
-											class="form-text text-danger"
-											th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}">Please
-											enter a correct email address.</small>
-									</div>
-									<div class="form-group">
-										<input class="form-control"
-											th:classappend="${#fields.hasErrors('telefono')}?is-invalid:form-control"
-											type="text" name="telefono" th:field="*{telefono}"
-											placeholder="Teléfono" th:value="${telefono}" rows="12">
-										<small class="form-text text-danger"
-											th:if="${#fields.hasErrors('telefono')}"
-											th:errors="*{telefono}">Ingrese un telefono</small>
-									</div>
-									<div class="form-group">
-										<input class="form-control"
-											th:classappend="${#fields.hasErrors('mail')}?is-invalid:form-control"
-											type="email" name="email" th:value="${mail}"
-											th:field="*{mail}" placeholder="Email"><small
-											class="form-text text-danger"
-											th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}">Please
-											enter a correct email address.</small>
-									</div>
-									<p>Fecha de Nacimiento:</p>
-									<div class="form-group">
-										<input class="form-control"
-											th:classappend="${#fields.hasErrors('nacimiento')}?is-invalid:form-control"
-											th:value="${#dates.format(nacimiento,'dd-MM-yyyy')}"
-											th:field="*{nacimiento}" th:type="text" id="fechaNac"
-											required> <small class="form-text text-danger"
-											id="fechaNulaError "
-											th:if="${#fields.hasErrors('nacimiento')}"
-											th:errors="*{nacimiento}">Please enter a correct
-											email address.</small>
-									</div>
-									<button type="submit" class="btn btn-primary ">Agregar</button>
-								</form>
-								<button id="crearPdf" type="button"
-										class="btn btn-primary">Exportar a PDF</button>
-							</div>
-						</div>
-						<div class="tab-pane" role="tabpanel" id="tab-2">
-							<p>Content for tab 2.</p>
-						</div>
-						<div class="tab-pane" role="tabpanel" id="tab-3">
-							<p>Content for tab 3.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+		<div><h2>INDEX</h2></div>
+				
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 		crossorigin="anonymous"></script>

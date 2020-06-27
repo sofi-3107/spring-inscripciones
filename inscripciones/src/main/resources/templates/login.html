@@ -8,31 +8,60 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
-<link th:href="@{css/maincss.css}">
+<link th:href="@{/css/maincss.css}" href="/css/maincss.css"  rel="stylesheet" type="text/css" >
 </head>
 <body>
-	<div th:if="${param.alert}" th:text="${param.alert}" class="alert "
-		th:classappend="${param.type}==danger?alert-danger:alert-success"
-		role="alert">
-		<i class="fas fa-smile-wink"></i>
-	</div>
-<div class="login-form">
-    <form action="/examples/actions/confirmation.php" method="post">
-        <h2 class="text-center">Iniciar Sesión</h2>       
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Username" required="required">
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password" required="required">
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Log in</button>
-        </div>
-        <div class="clearfix">
-            <label class="pull-left checkbox-inline"><input type="checkbox"> Recordarme</label>
-            <a href="#" class="pull-right">¿Olvisaste la contraseña?</a>
-        </div>        
-    </form>
-</div>
+<div class="container">
+    <div class="row">
+            <div th:if="${error}" th:text="${error}" class="alert "
+                th:classappend="${error}?alert-danger:alert-danger"
+                role="alert">
+            </div>
+
+           <!-- Se mostrará si hay un error de login-->
+            <div th:if="${param.error}" th:text="${param.error}" class="alert "
+                th:classappend="${param.error}?alert-danger:alert-danger"
+                role="alert">
+            </div>
+            <!-- Se mostrará después de logout-->
+                <div th:if="${param.logout}" th:text="${param.logout}" class="alert "
+                th:classappend="${param.logout}?alert-danger:alert-info"
+                role="alert">
+            </div>
+    </div><!--row alerts-->
+    <div class="row justify-content-center">
+           <div class="col-4">
+                <!--Formulario de Login-->
+                <div class="login-form mx-auto">
+                        <h2 th:text="${signup}?'Crear Cuenta de usuario':'Inicio de sesión'">Inicio de Sesión</h2>
+                        <form th:action="${signup}?@{/signup}:@{/login}" action="#" th:object="${usuario}" method="post">                            
+                            <h2 th:text="${signup}?'Crear Cuenta de usuario':'Iniciar sesión'" class="text-center">Iniciar Sesión</h2>       
+                            <!--Inputs-->
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="userName" th:field="*{userName}"placeholder="Username" required="required">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" name="password" th:field="*{password}" placeholder="Password" required="required">
+                            </div>
+                            <div class="form-group">
+                                <select name="roles" th:if="${signup}" th:field="*{rol}" class="form-control" >
+                                    <option th:value="directivo" th:text="directivo">directivo</option>
+                                    <option th:value="administrativo"th:text="administrativo">administrativo</option>
+                                    <option th:value="preceptor"th:text="preceptor">preceptor</option>
+                                </select>
+                            </div>
+                            <!--Botón-->
+                            <div class="form-group">
+                                <button th:text="${signup}?'Crear Cuenta':'Iniciar sesión'"type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+                            </div>
+                            <!--Enlace crear nuevo usuario-->       
+                            <div>    
+                                <a th:if="${signin}"th:href="@{/signup}" class="pull-right">¿No sos usuario?</a>    
+                            </div>
+                        </form>                 
+                </div>
+        </div><!--col form-->
+    </div><!--row form-->
+ </div><!--Main Container-->   
 </body>
 </html>                                		                            

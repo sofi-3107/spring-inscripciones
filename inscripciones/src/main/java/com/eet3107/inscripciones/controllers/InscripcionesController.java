@@ -40,7 +40,6 @@ import com.itextpdf.*;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
 @Controller
-@RequestMapping("/")
 public class InscripcionesController {
 	
 	
@@ -166,20 +165,13 @@ public class InscripcionesController {
 
 	}
 
-	private ISpringTemplateEngine templateEngine(ITemplateResolver templateResolver) {
-		SpringTemplateEngine engine = new SpringTemplateEngine();
-		engine.addDialect(new Java8TimeDialect());
-		engine.setTemplateResolver(templateResolver);
-		return engine;
-	}
-	
-	@GetMapping("/crearCsv")
-	public String crearCsv(RedirectAttributes redAttr) {
-		ExportarExcelCsv.crearArchivoCSV("todoelMundo", service.findAll());
-		redAttr.addAttribute("alert", "Generación exitosa,\n Tu archivo CSV se guardo en Documents");
-		return "redirect:/";
-		
-	}
+//	@GetMapping("/crearCsv")
+//	public String crearCsv(RedirectAttributes redAttr) throws Exception {
+//		ExportarExcelCsv.crearArchivoCSV("todoelMundo", service.findAll());
+//		redAttr.addAttribute("alert", "Generación exitosa,\n Tu archivo CSV se guardo en Documents");
+//		return "redirect:/";
+//		
+//	}
 	
 	@GetMapping("/crearPDF")
 	public void crearPdf() {
@@ -187,7 +179,7 @@ public class InscripcionesController {
 	}
 	
 	@RequestMapping(value="/MyJson",method=RequestMethod.GET ,produces={"application/json"})
-	public @ResponseBody Iterable<Alumno> returnGet () {
+	public @ResponseBody Iterable<Alumno> returnGet () throws Throwable  {
 		try {
 			
 			return service.findAll();
@@ -200,4 +192,7 @@ public class InscripcionesController {
 		
 	}
 	
+
+	
+
 }
