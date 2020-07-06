@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,7 +24,7 @@ import lombok.Setter;
 @NoArgsConstructor @EqualsAndHashCode
 public class TrayectoriaAcademica {
 	
-	@Id @Column 
+	@Id @Temporal(TemporalType.DATE) 
 	private Date fechaInscripcion;
 	
 	@OneToOne(cascade=CascadeType.ALL)

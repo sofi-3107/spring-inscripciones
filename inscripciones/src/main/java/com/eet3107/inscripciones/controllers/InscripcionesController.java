@@ -43,7 +43,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class InscripcionesController {
 	
 	
-	public static final ObjectMapper JSON_MAPPER = new ObjectMapper();
+
 
 	@Autowired
 	AlumnoServiceImpl service;

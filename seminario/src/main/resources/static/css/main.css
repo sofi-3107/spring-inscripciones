@@ -1,0 +1,109 @@
+body{
+    background-color: #e8e8e8;
+}
+
+.main-container{
+     background-color: #e8e8e8;
+}
+.header{
+    background-color: #333A56;
+    height: 300px;
+    box-shadow: 0px 6px 5px #BDBDBD;
+}
+
+.footer{
+    background-color: #333A56;
+    height: 100px;
+    box-shadow: 0px 6px 5px #BDBDBD;
+}
+#logo{
+    margin:auto;
+    width: 150px;
+    height: 150px;
+}
+
+.body-container{
+    background-color: #C1D9EA;
+    height: 100%px;
+}
+
+.tarjeta{
+   border-radius:15px;
+    box-shadow: 0px 6px 5px #BDBDBD;
+}
+
+    .tarjeta:hover,.btn-salir>img:hover,.caja-consultar:hover{
+    border: solid 5px white;
+    box-shadow: 1px 1px 10px 10px #BDBDBD;
+            }
+.btn-salir{
+    width: 150px;
+    height: 150px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0px 8px 5px #BDBDBD;
+}
+
+.tabla{
+    margin-top:50px;
+    margin-bottom:25px;
+}
+
+.caja-consultar{
+    border: solid 1px black;
+    background-color: #6d7993;
+    height: 33%;
+    margin-top:5px;
+    box-shadow: -10px 0px 8px 2px #BDBDBD;
+}
+
+.img-mediana{
+    height: 200px;
+    width:200px;
+}
+
+.img-small{
+    height: 100px;
+    width: 100px;
+}
+
+option,label,th,td{
+    
+    font-size:20px;
+}
+
+.formulario{
+    background-color: rgba(255,255,255,.6);
+    box-shadow: 0px -5px 10px 3px #bdbdbd;
+}
+
+.formulario>input {
+    background-color: white;
+}
+
+option{
+    color:black;
+}
+
+.form-group>label{
+    margin-top:15px;
+}
+
+input[type="checkbox"], input[type="radio"]{
+    width: 20px;
+    height: 20px;
+}
+
+#padres,#hermanos,#tios,#abuelos,#padres,#otros,#primos,#cuadras{
+    width:55px;}
+
+    
+.btn-enviar{
+    width:200px;
+        
+    }
+
+.modal-dialog-centered{
+    max-width: 30%;
+}
+

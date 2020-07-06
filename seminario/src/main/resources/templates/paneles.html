@@ -1,0 +1,31 @@
+<html>
+
+<head th:replace="./fragments/fragmentos::head">
+	<title>title</title>
+</head>
+
+<body>
+	<!--Header-->
+	<div class="main-container container-fluid">
+		<div th:insert="./fragments/fragmentos:: header(titulo=${titulo})"></div>
+	</div>
+	<!--MainContent-->
+	<div class="row justify-content-center">
+		<div  th:replace="./fragments/fragmentos::panel-box(title=${optionTitle},img=${optionImg})"></div>
+		
+		<div  th:replace="./fragments/fragmentos :: panel-box(title=${optionTitle2},img=${optionImg2})"></div>
+		<div th:if="${optionTitle3}">
+			<div th:replace="./fragments/fragmentos :: panel-box(title=${optionTitle3},img=${optionImg3})"></div>
+		</div>
+		<div th:replace="./fragments/fragmentos:: btn-salir"></div>
+	</div>
+
+
+		<div th:replace="./fragments/fragmentos :: scripts"></div>
+</body>
+
+
+<footer th:replace="./fragments/fragmentos :: footer">
+</footer>
+
+</html>
