@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -25,12 +24,13 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class Legajo {
 	
-	@Column @Id @GeneratedValue
+	@Column 
+	@Id
+	//@GeneratedValue
 	private Integer idLegajo;
 	
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name="id")
 	@MapsId
 	private Alumno alumno;
 	

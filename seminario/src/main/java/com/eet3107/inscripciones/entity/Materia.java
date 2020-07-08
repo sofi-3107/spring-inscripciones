@@ -1,11 +1,16 @@
 package com.eet3107.inscripciones.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,14 +28,20 @@ public class Materia {
 	@Column
 	private String nombre;
 	
-	@ManyToOne
-	@JoinColumn(name="fecha_inscripcion")
-	private TrayectoriaAcademica inscripcion;
 	
-	@ManyToOne
-	@JoinColumn(name="idCurso")
-	private Curso curso;
+	//@ManyToOne
 	
-	@Column
-	private Integer[] notas=new Integer[3];
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="idPe")
+	private PlanDeEstudios planDeEstudios;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	private TrayectoriaAcademica pendiente;
+	
+	@OneToMany(mappedBy="materia",cascade=CascadeType.ALL)
+	private List<NotaTrimestral>notas;
+
+
+	
+	
 }

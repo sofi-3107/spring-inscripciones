@@ -1,17 +1,16 @@
 package com.eet3107.inscripciones.entity;
 
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Transient;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,23 +18,22 @@ import lombok.Setter;
 
 @Entity @EqualsAndHashCode
 @Getter @Setter @NoArgsConstructor
+@AllArgsConstructor
 public class Curso {
 	
-	@Id @Column @GeneratedValue
-	private Integer id_curso;
+
+
+	@Id @Column
+	@GeneratedValue
+	private Integer idCurso;
 	
 	@Column
 	private String nombre;
 	
-	@OneToMany(mappedBy="curso",cascade=CascadeType.ALL)
-	private  Set<Materia>planDeEstudios;
+// para recuperar el plan de estudios vamos a concatenar nombre+ciclo
 	
 	@Column
 	private String division;
-	
-	@OneToOne(cascade=CascadeType.ALL)
-	@PrimaryKeyJoinColumn
-	private TrayectoriaAcademica cicloLectivoActual;
 	
 	@Column
 	private Character turno;
@@ -45,6 +43,10 @@ public class Curso {
 	
 	@Column
 	private Integer edadMax;
+
+	@OneToOne(fetch=FetchType.LAZY,optional=false,cascade=CascadeType.ALL)
+	@JoinColumn(name="id",unique=true)
+	private PlanDeEstudios planE;
 	
 	@Transient
 	public static Integer cupoMax=25;
@@ -53,5 +55,10 @@ public class Curso {
 	public static Integer getCupoMax() {
 		return cupoMax;
 	}
+
+
+
+	
+	
 
 }
