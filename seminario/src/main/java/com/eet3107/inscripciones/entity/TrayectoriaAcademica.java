@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.validator.constraints.Length;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +26,7 @@ import lombok.Setter;
 public class TrayectoriaAcademica {
 	
 	@Column @Id 
+	@Length(max=15)
 	private String fechaInscripcion;
 	
 	@ManyToOne

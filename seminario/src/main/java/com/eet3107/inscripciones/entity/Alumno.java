@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.Length;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,15 +28,18 @@ public class Alumno {
 	private Integer id;
 	
 	@Column
+	@Length(max=25)
 	private String apellido;
 	
 	@Column
+	@Length(max=25)
 	private String nombre;
 	
 	@Column
+	@Length(max=15)
 	private String fechaNacimiento;
 	
-	@Column
+	@Column(length=8)
 	private String dni;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy="alumno")

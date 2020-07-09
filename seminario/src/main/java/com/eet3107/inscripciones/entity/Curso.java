@@ -9,6 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
+import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -27,25 +31,29 @@ public class Curso {
 	@GeneratedValue
 	private Integer idCurso;
 	
-	@Column
+	@Column(length=2)
 	private String nombre;
 	
 // para recuperar el plan de estudios vamos a concatenar nombre+ciclo
 	
-	@Column
+	@Column(length=2)
 	private String division;
 	
 	@Column
+	@Length(min=5,max=6)
 	private Character turno;
 	
 	@Column
+	@Length(min=6,max=8)
 	private String ciclo;
 	
 	@Column
+	@Min(value=12,message="Error edad mínima requerida es 12")
+	@Max(value=25,message="Error, edad máxima admitida es 25")
 	private Integer edadMax;
 
-	@OneToOne(fetch=FetchType.LAZY,optional=false,cascade=CascadeType.ALL)
-	@JoinColumn(name="id",unique=true)
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_pe",unique=true)
 	private PlanDeEstudios planE;
 	
 	@Transient
