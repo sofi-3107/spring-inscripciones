@@ -7,5 +7,7 @@ import com.eet3107.inscripciones.entity.Alumno;
 
 @Repository
 public interface AlumnoRepository extends CrudRepository<Alumno,Integer>{
+	
+	
 
 }

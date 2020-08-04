@@ -1,6 +1,5 @@
 package com.eet3107.inscripciones.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +13,6 @@ import javax.validation.constraints.Min;
 
 import org.hibernate.validator.constraints.Length;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +20,6 @@ import lombok.Setter;
 
 @Entity @EqualsAndHashCode
 @Getter @Setter @NoArgsConstructor
-@AllArgsConstructor
 public class Curso {
 	
 
@@ -31,16 +28,15 @@ public class Curso {
 	@GeneratedValue
 	private Integer idCurso;
 	
-	@Column(length=2)
-	private String nombre;
+	@Column
+	private String curso;
 	
 // para recuperar el plan de estudios vamos a concatenar nombre+ciclo
 	
-	@Column(length=2)
+	@Column
 	private String division;
 	
 	@Column
-	@Length(min=5,max=6)
 	private Character turno;
 	
 	@Column

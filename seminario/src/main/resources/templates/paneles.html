@@ -11,11 +11,11 @@
 	</div>
 	<!--MainContent-->
 	<div class="row justify-content-center">
-		<div  th:replace="./fragments/fragmentos::panel-box(title=${optionTitle},img=${optionImg})"></div>
+		<div  th:replace="./fragments/fragmentos::panel-box(title=${optionTitle},img=${optionImg},url=${url})"></div>
 		
-		<div  th:replace="./fragments/fragmentos :: panel-box(title=${optionTitle2},img=${optionImg2})"></div>
+		<div th:if="${optionTitle2}"  th:replace="./fragments/fragmentos :: panel-box(title=${optionTitle2},img=${optionImg2},url=${url})"></div>
 		<div th:if="${optionTitle3}">
-			<div th:replace="./fragments/fragmentos :: panel-box(title=${optionTitle3},img=${optionImg3})"></div>
+			<div th:replace="./fragments/fragmentos :: panel-box(title=${optionTitle3},img=${optionImg3},url=${url}"></div>
 		</div>
 		<div th:replace="./fragments/fragmentos:: btn-salir"></div>
 	</div>

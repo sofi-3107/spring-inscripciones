@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -40,6 +42,7 @@ public class Alumno {
 	private String fechaNacimiento;
 	
 	@Column(length=8)
+	@NotNull
 	private String dni;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy="alumno")

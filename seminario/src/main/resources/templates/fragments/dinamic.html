@@ -1,0 +1,7 @@
+<div th:fragment="pendientes">
+	<label for="pendientes">Condicion</label> 
+	<select class="form-control"th:field="${curso.turno}">
+		<option th:value="'M'" th:text="Mañana"></option>
+		<option th:value="'T'" th:text="Tarde"></option>
+	</select>
+</div>
