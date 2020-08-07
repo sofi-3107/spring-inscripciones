@@ -10,12 +10,7 @@
 	</div>
 	<div class="row  body-container  justify-content-center">
 		<div class="col-8 formulario m-5">
-		<!-- ALERT -->
 		
-			<div th:replace="./fragments/fragmentos :: alert(type=${type},message=${message})"
-	   		 		th:classappend="'alert-'+${type}">   			
-			</div>			
-		<!-- ALERT END -->
 		
 			<p class="h2 text-center my-4">Inscripción de Alumnos</p>
 			
@@ -97,6 +92,15 @@
 								<input class="btn col-3 btn-primary"type="submit" value="enviar">							
 					</div>
 					
+					<!-- ALERT -->
+		
+					<div th:replace="./fragments/fragmentos :: alert(type=${type},message=${message})"
+	   		 			th:classappend="'alert-'+${type}">   			
+					</div>			
+					<!-- ALERT END -->
+					<ul th:if="${#fields.hasErrors('*')}">
+  						<li class="text-danger" th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
+					</ul>
 			</form>
 			
 		</div>

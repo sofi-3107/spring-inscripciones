@@ -5,7 +5,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,9 +45,12 @@ public class AdministrativoController {
 	}
 	
 	@PostMapping("/inscripciones")
-	public String  inscribir(  Alumno alumno,
-			 Curso curso,TrayectoriaAcademica trayectoria) {
+	public String  inscribir( @ModelAttribute("alumno") @Valid Alumno alumno,BindingResult alumnoValid,
+			 @Valid @ModelAttribute("curso") Curso curso,BindingResult cursoValid,@Valid @ModelAttribute("trayectoria") TrayectoriaAcademica trayectoria,BindingResult trayValid) {
 		
+		if(alumnoValid.hasErrors()||cursoValid.hasErrors()||trayValid.hasErrors()) {
+			return "form";
+		}
 
 		inscripcionesSave.inscribirAlumno(alumno, trayectoria, curso);
 		return "redirect:/admin/inscripciones";
