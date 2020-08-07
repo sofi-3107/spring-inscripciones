@@ -70,20 +70,19 @@ public class InscripcionesServiceImpl implements InscripcionesService{
 	@Override
 	@Transactional
 	public void inscribirAlumno(Alumno al, TrayectoriaAcademica tya, Curso curso) {
-			aluRep.save(al);
+			
 			Legajo legajo=new Legajo();
 			legajo.setAlumno(al);
 			legajo.setIdLegajo(al.getId());
 			al.setLegajo(legajo);
 			tya.setLegajo(legajo);
-			trayectoriaRep.save(tya);
+			aluRep.save(al);
 			//Curso curso2=cursoRep.findByNombreAndDivisionAndCicloAndTurno(curso.getNombre(), curso.getDivision(), curso.getCiclo(), curso.getTurno());
-			
+			cursoRep.save(curso);
 			tya.setCurso(curso);
 			Set <TrayectoriaAcademica>inscripciones=new HashSet<TrayectoriaAcademica>();
 			inscripciones.add(tya);			
-			al.getLegajo().setInscripciones(inscripciones);			
-			cursoRep.save(curso);
+			al.getLegajo().setInscripciones(inscripciones);	
 			trayectoriaRep.save(tya);
 			legajoRep.save(al.getLegajo());
 		

@@ -46,21 +46,11 @@ public class AdministrativoController {
 	}
 	
 	@PostMapping("/inscripciones")
-	public String  inscribir(@ModelAttribute @Valid Alumno alumno,
-			@ModelAttribute Curso curso, @ModelAttribute  @Valid TrayectoriaAcademica trayectoria, BindingResult bResult,ModelMap model) {
-		//ModelAndView mav=new ModelAndView("form");	
-		if(bResult.hasErrors()) {
-			
-			model.addAttribute("type","danger");
-			model.addAttribute("message","Ha ocurrido un error");
-			model.addAttribute("alumno",alumno);
-			model.addAttribute("curso",curso);
-			model.addAttribute("trayectoria",trayectoria);
-			return "form";
-			}
+	public String  inscribir(  Alumno alumno,
+			 Curso curso,TrayectoriaAcademica trayectoria) {
+		
+
 		inscripcionesSave.inscribirAlumno(alumno, trayectoria, curso);
-		model.addAttribute("type","success");
-		model.addAttribute("message","Alumno inscripto correctamente");
 		return "redirect:/admin/inscripciones";
 
 	}

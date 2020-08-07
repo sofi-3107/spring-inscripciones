@@ -51,7 +51,8 @@
 						
 								<div class="form-group ">
 									<label for="curso">Curso</label>
-									 <select class="form-control" th:field="${curso.curso}">
+									 <select class="form-control" th:field="${curso.nombreCurso}">
+
 										<option th:value=" '1º' " th:text=" '1º' "></option>
 										<option th:value=" '2º' " th:text=" '2º' "></option>
 										<option th:value=" '3º' " th:text=" '3º' "></option>
@@ -62,7 +63,7 @@
 									<label for="division">Division</label> 
 									<select class="form-control"th:field="${curso.division}">
 										<option th:value=" '1º' " th:text=" '1º' "></option>
-										<option th:value=" ' 2º' " th:text=" '2º' "></option>
+										<option th:value=" '2º' " th:text=" '2º' "></option>
 										<option th:value=" '3º' " th:text=" '3º' "></option>
 									</select>
 								</div>
@@ -95,13 +96,7 @@
 					<div class="row justify-content-center mt-5">						
 								<input class="btn col-3 btn-primary"type="submit" value="enviar">							
 					</div>
-					<!-- ERROR LIST -->
-			<div >
-				<ul th:if="${#fields.hasErrors('*')}">
-           			<li  th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
-      		 	</ul>
-   			</div>
-		<!-- ERROR LIST END -->
+					
 			</form>
 			
 		</div>

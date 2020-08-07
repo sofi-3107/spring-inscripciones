@@ -21,7 +21,6 @@ import lombok.Setter;
 @Entity
 @Table(name="legajo")
 @Getter @Setter @NoArgsConstructor
-@EqualsAndHashCode
 public class Legajo {
 	
 	@Column 

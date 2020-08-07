@@ -8,8 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -28,24 +27,22 @@ public class Curso {
 	@GeneratedValue
 	private Integer idCurso;
 	
-	@Column
-	private String curso;
+	@Column(name="curso")
+	@Size(max=2)
+	private String nombreCurso;
 	
-// para recuperar el plan de estudios vamos a concatenar nombre+ciclo
 	
 	@Column
 	private String division;
 	
 	@Column
-	private Character turno;
+	private String turno;
 	
 	@Column
 	@Length(min=6,max=8)
 	private String ciclo;
 	
 	@Column
-	@Min(value=12,message="Error edad mínima requerida es 12")
-	@Max(value=25,message="Error, edad máxima admitida es 25")
 	private Integer edadMax;
 
 	@OneToOne(fetch=FetchType.LAZY)

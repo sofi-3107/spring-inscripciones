@@ -21,7 +21,7 @@ import lombok.Setter;
 @Entity
 @Table(name="alumno")
 @Getter @Setter
-@NoArgsConstructor @EqualsAndHashCode
+@NoArgsConstructor 
 public class Alumno {
 	
 	@Id
@@ -42,7 +42,6 @@ public class Alumno {
 	private String fechaNacimiento;
 	
 	@Column(length=8)
-	@NotNull
 	private String dni;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy="alumno")

@@ -30,11 +30,11 @@ public class TrayectoriaAcademica {
 	private String fechaInscripcion;
 	
 	@ManyToOne
-	@JoinColumn(name = "idLegajo")
+	@JoinColumn(name = "id_legajo")
 	private Legajo legajo;
 	
 	@OneToOne
-	@JoinColumn(name="idCurso")
+	@JoinColumn(name="idCurso",nullable=false)
 	private Curso curso;
 	
 	@Column
