@@ -7,37 +7,47 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.Length;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Entity @Getter @Setter
- @EqualsAndHashCode
- @NoArgsConstructor
+@Entity 
+@NoArgsConstructor
+@Getter @Setter @AllArgsConstructor
+@ToString
 public class TrayectoriaAcademica {
 	
-	@Column @Id 
-	@Length(max=15)
+
+
+	@Id @GeneratedValue
+	private Integer idInscripciones;
+	
+	@Column(length=10)
+	@NotBlank
 	private String fechaInscripcion;
-	
+
+	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "id_legajo")
-	private Legajo legajo;
+	@JoinColumn(name="alumno_fk")
+	private Alumno alumno;
 	
-	@OneToOne
-	@JoinColumn(name="idCurso",nullable=false)
-	private Curso curso;
+	@Column(length=5)
+	private String curso;
 	
 	@Column
+	@Size(max=15)
 	private String condicion;
 	
 	// recupera el plan de estudios para mostrar listado de materias pero solo guarda 2

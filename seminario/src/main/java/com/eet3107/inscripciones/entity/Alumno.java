@@ -1,12 +1,15 @@
 package com.eet3107.inscripciones.entity;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -24,9 +27,11 @@ import lombok.Setter;
 @NoArgsConstructor 
 public class Alumno {
 	
-	@Id
-	@GeneratedValue
+	
+	
 	@Column
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
 	@Column
@@ -52,9 +57,10 @@ public class Alumno {
 	@Pattern(regexp="\\d+",message="Debe escribir en su dni solo los 8 números del mismo, sin puntos")// Esto \\d es digitos y el + q se puede repetir una o mas veces
 	private String dni;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy="alumno")
-	private Legajo legajo;
-
+	
+	@OneToMany(mappedBy="alumno",fetch=FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<TrayectoriaAcademica> inscripciones;
+	
 	
 	
 

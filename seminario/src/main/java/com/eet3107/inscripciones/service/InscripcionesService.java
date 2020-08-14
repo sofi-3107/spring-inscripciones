@@ -1,12 +1,14 @@
 package com.eet3107.inscripciones.service;
 
+import java.util.List;
 import java.util.Set;
 
 import com.eet3107.inscripciones.entity.Alumno;
 import com.eet3107.inscripciones.entity.Curso;
-import com.eet3107.inscripciones.entity.Legajo;
 import com.eet3107.inscripciones.entity.Materia;
 import com.eet3107.inscripciones.entity.TrayectoriaAcademica;
+
+
 
 public interface InscripcionesService {
 
@@ -16,10 +18,17 @@ public interface InscripcionesService {
 	
 	Integer getMaxCupo(Curso curso);
 	
-	Integer getCantInscriptosEnCurso(Curso curso);
+	Alumno findAlumnoByDni(String dni);
 	
-	public Alumno findAlumnoByDni(String dni);
+	Alumno findAlumnoById(Integer id);
+	
 
-	void inscribirAlumno(Alumno al, TrayectoriaAcademica tya,Curso curso);
+	void inscribirAlumno(Alumno al, TrayectoriaAcademica tya, Curso curso) throws Exception;
+	
+	void reinscribirAlumno( Alumno al,TrayectoriaAcademica tya,Curso curso);
+	
+	Integer getCantidadEnCurso(Curso curso,String fechaInscripcion);
+	
+	void testGuardarAlumno(Alumno alumno);
 
 }

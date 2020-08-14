@@ -1,9 +1,10 @@
 package com.eet3107.inscripciones.entity;
 
-import java.io.Serializable;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,20 +15,21 @@ import lombok.Setter;
 
 @Entity @Setter @Getter
 @NoArgsConstructor
-public class NotaTrimestral implements Serializable {
+public class NotaTrimestral  {
 	
 
-/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+@Id @GeneratedValue
+private Integer idNotas;
 
-@Id 
 @ManyToOne
-@JoinColumn(name="id")
+@JoinColumn(name="detalle_alumno")
+private MateriaAlumnoCursoDetail detalleAlumno;
+
+@ManyToOne
+@JoinColumn(name="id_materia")
 private Materia  materia;
 
-@Id @Column
+@Column
 private Integer trimestre;
 	
 @Column

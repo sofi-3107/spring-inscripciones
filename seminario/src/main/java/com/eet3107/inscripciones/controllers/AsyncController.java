@@ -2,6 +2,7 @@ package com.eet3107.inscripciones.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eet3107.inscripciones.entity.Alumno;
 import com.eet3107.inscripciones.entity.Curso;
 import com.eet3107.inscripciones.entity.Materia;
+import com.eet3107.inscripciones.serviceimpl.InscripcionesServiceImpl;
 
 @RestController
 @RequestMapping("api/")
 public class AsyncController {
 	
 
+	@Autowired
+	InscripcionesServiceImpl service;
 	
 	@GetMapping("/planestudio")
 	public List<Materia>getPlanEstudios(@RequestParam(name="pecurso",required=true)String idCurso){
@@ -27,8 +31,9 @@ public class AsyncController {
 	
 	@GetMapping("/getByDni/{dni}")
 	public Alumno getByDni(@PathVariable String dni) {
-		return null;
+		return service.findAlumnoByDni(dni);
 	}
+	
 
 	@GetMapping("/getDatosCurso/{curso}")	
 	public Curso getDatosCurso(@PathVariable Curso curso) {

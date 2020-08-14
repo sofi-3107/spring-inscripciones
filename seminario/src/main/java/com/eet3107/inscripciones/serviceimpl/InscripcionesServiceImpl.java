@@ -1,6 +1,7 @@
 package com.eet3107.inscripciones.serviceimpl;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -10,14 +11,15 @@ import org.springframework.stereotype.Service;
 
 import com.eet3107.inscripciones.entity.Alumno;
 import com.eet3107.inscripciones.entity.Curso;
-import com.eet3107.inscripciones.entity.Legajo;
 import com.eet3107.inscripciones.entity.Materia;
+import com.eet3107.inscripciones.entity.MateriaAlumnoCursoDetail;
 import com.eet3107.inscripciones.entity.TrayectoriaAcademica;
 import com.eet3107.inscripciones.repository.AlumnoRepository;
 import com.eet3107.inscripciones.repository.CursoRepository;
-import com.eet3107.inscripciones.repository.LegajoRepository;
+import com.eet3107.inscripciones.repository.MateriaAlumnoCursoDetailRepository;
 import com.eet3107.inscripciones.repository.TrayectoriaAcademicaRepository;
 import com.eet3107.inscripciones.service.InscripcionesService;
+
 
 @Service
 public class InscripcionesServiceImpl implements InscripcionesService{
@@ -33,61 +35,116 @@ public class InscripcionesServiceImpl implements InscripcionesService{
 	TrayectoriaAcademicaRepository trayectoriaRep;
 	
 	@Autowired
-	LegajoRepository legajoRep;
+	MateriaAlumnoCursoDetailRepository detailRep;
 	
-	
+
 
 	@Override
 	public Set<Materia> getPlanEstudios(String curso) {
-		// TODO Auto-generated method stub
-		return null;
+		return cursoRep.findByIdCurso(curso);
 	}
 
 	@Override
 	public Integer getMaxAgeCurso(Curso curso) {
-		// TODO Auto-generated method stub
-		return null;
+		return curso.getEdadMax();
 	}
 
 	@Override
 	public Integer getMaxCupo(Curso curso) {
-		// TODO Auto-generated method stub
-		return null;
+		return cursoRep.findById(curso.getIdCurso()).get().getCupoMax();
 	}
 
-	@Override
-	public Integer getCantInscriptosEnCurso(Curso curso) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public Alumno findAlumnoByDni(String dni) {
-		// TODO Auto-generated method stub
-		return null;
+		return aluRep.findByDni(dni);
 	}
 
 	@Override
 	@Transactional
-	public void inscribirAlumno(Alumno al, TrayectoriaAcademica tya, Curso curso) {
-			
-			Legajo legajo=new Legajo();
-			legajo.setAlumno(al);
-			legajo.setIdLegajo(al.getId());
-			al.setLegajo(legajo);
-			tya.setLegajo(legajo);
-			aluRep.save(al);
-			//Curso curso2=cursoRep.findByNombreAndDivisionAndCicloAndTurno(curso.getNombre(), curso.getDivision(), curso.getCiclo(), curso.getTurno());
-			cursoRep.save(curso);
-			tya.setCurso(curso);
-			Set <TrayectoriaAcademica>inscripciones=new HashSet<TrayectoriaAcademica>();
-			inscripciones.add(tya);			
-			al.getLegajo().setInscripciones(inscripciones);	
-			trayectoriaRep.save(tya);
-			legajoRep.save(al.getLegajo());
+	public void inscribirAlumno(Alumno al, TrayectoriaAcademica tya, Curso curso) throws Exception {			
+		
+		Set<TrayectoriaAcademica>inscripciones=new HashSet<TrayectoriaAcademica>();	
+		aluRep.save(al);
+		System.out.println("Alumno: "+al.toString());
+		tya.setAlumno(al);		
+		Curso cursoUpdate=cursoRep.findBynombreCursoAndDivisionAndCicloAndTurno(curso.getNombreCurso(), curso.getDivision(), curso.getCiclo(), curso.getTurno());
+		tya.setCurso(cursoUpdate.getIdCurso());
+		trayectoriaRep.save(tya);
+		inscripciones.add(tya);
+		al.setInscripciones(inscripciones);	
+		//Tabla de detalle
+		System.out.println("getCiclo: "+cursoUpdate.getCiclo());
+		MateriaAlumnoCursoDetail detalle=new MateriaAlumnoCursoDetail();
+		detalle.setAlumno(al.getDni());
+		detalle.setAnioLectivo(tya.getFechaInscripcion().substring(0, 4));
+		detalle.setCicloCurso(cursoUpdate.getCiclo());
+		detalle.setNombreCurso(cursoUpdate.getNombreCurso());
+		detalle.setDivisionCurso(cursoUpdate.getDivision());
+		detalle.setTurno(cursoUpdate.getTurno());
+		detailRep.save(detalle);
+	}
+	
+
+	@Override
+	public void reinscribirAlumno(Alumno al, TrayectoriaAcademica tya, Curso curso) {
+		Alumno alumno=aluRep.findById(al.getId()).get();
+		Curso cursoUpdate=cursoRep.findBynombreCursoAndDivisionAndCicloAndTurno(curso.getNombreCurso(), curso.getDivision(), curso.getCiclo(), curso.getTurno());
+		tya.setCurso(cursoUpdate.getIdCurso());
+		tya.setAlumno(alumno);
+		System.out.println("Antes de persistir tray: "+alumno.toString());
+		trayectoriaRep.save(tya);
+		alumno.getInscripciones().add(tya);
+		aluRep.save(alumno);
+		//Tabla de detalle
+		MateriaAlumnoCursoDetail detalle=new MateriaAlumnoCursoDetail();
+		detalle.setAlumno(al.getDni());
+		detalle.setAnioLectivo(tya.getFechaInscripcion().substring(0, 4));
+		detalle.setCicloCurso(cursoUpdate.getCiclo());
+		detalle.setNombreCurso(cursoUpdate.getNombreCurso());
+		detalle.setDivisionCurso(cursoUpdate.getDivision());
+		detalle.setTurno(cursoUpdate.getTurno());
+		detailRep.save(detalle);
+	}
+
+	@Override
+	public Alumno findAlumnoById(Integer id) {
+		Optional<Alumno> alumno=aluRep.findById(id);
+		return alumno.get();
+	}
+
+
+
+	@Override
+	public Integer getCantidadEnCurso(Curso curso, String fechaInscripcion) {
+		return trayectoriaRep.findAllByCursoAndFechaInscripcion(curso, fechaInscripcion).size();
+	}
+
+	@Override
+	public void testGuardarAlumno(Alumno alumno) {
+		aluRep.save(alumno);
 		
 	}
 
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+	
+
+	
 
 
 
