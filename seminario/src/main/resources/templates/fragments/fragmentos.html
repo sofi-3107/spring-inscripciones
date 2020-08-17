@@ -55,6 +55,7 @@
                 integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
                 crossorigin="anonymous"></script>
             <script th:src="@{/js/ajax.js}"></script>
+             <script th:src="@{/pruebas.js}"></script>
         </scripts>
 </body>
 </div>
@@ -62,8 +63,8 @@
 
 <!--ALERTS-->
 <div th:fragment="alert (type,message)" 
-    th:classappend="'alert-'+${type}" class="alert alert-dissmisable fade show" role="alert">
-    <span th:text="${message}">TextoAlert</span>
+    th:classappend="'alert-'+${param.type}" class="alert alert-dissmisable fade show" role="alert">
+    <span th:text="${param.message}">TextoAlert</span>
      <a href="#" class="close" data-dismiss="alert" aria-label="Close">x</a>
 </div>
 <!--cajas opciones panel-->
@@ -98,7 +99,7 @@
                 </p>
                 <p class="small text-light font-italic">
                     Dirección: Lavalle 875 Salta Capital
-                </p>>
+                </p>
             </div>
         </div>
     </div>

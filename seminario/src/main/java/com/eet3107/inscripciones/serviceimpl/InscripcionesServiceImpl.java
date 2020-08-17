@@ -1,7 +1,6 @@
 package com.eet3107.inscripciones.serviceimpl;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -17,6 +16,7 @@ import com.eet3107.inscripciones.entity.TrayectoriaAcademica;
 import com.eet3107.inscripciones.repository.AlumnoRepository;
 import com.eet3107.inscripciones.repository.CursoRepository;
 import com.eet3107.inscripciones.repository.MateriaAlumnoCursoDetailRepository;
+import com.eet3107.inscripciones.repository.MateriaRepository;
 import com.eet3107.inscripciones.repository.TrayectoriaAcademicaRepository;
 import com.eet3107.inscripciones.service.InscripcionesService;
 
@@ -37,12 +37,10 @@ public class InscripcionesServiceImpl implements InscripcionesService{
 	@Autowired
 	MateriaAlumnoCursoDetailRepository detailRep;
 	
+	@Autowired
+	MateriaRepository materiaRep;
 
 
-	@Override
-	public Set<Materia> getPlanEstudios(String curso) {
-		return cursoRep.findByIdCurso(curso);
-	}
 
 	@Override
 	public Integer getMaxAgeCurso(Curso curso) {
@@ -77,6 +75,14 @@ public class InscripcionesServiceImpl implements InscripcionesService{
 		//Tabla de detalle
 		System.out.println("getCiclo: "+cursoUpdate.getCiclo());
 		MateriaAlumnoCursoDetail detalle=new MateriaAlumnoCursoDetail();
+		Set<Materia>materiaNotas=new HashSet<Materia>();
+		materiaNotas.addAll(cursoUpdate.getPlanDeEstudios());
+		System.out.println("Materia Set tamaño : "+materiaNotas.size());
+		for(Materia m:materiaNotas) {
+			System.out.println(m.getNombre());
+		}
+		detalle.setMateriaNotas(materiaNotas);
+		detalle.setAnioLectivo(tya.getAnioLectivo());
 		detalle.setAlumno(al.getDni());
 		detalle.setAnioLectivo(tya.getFechaInscripcion().substring(0, 4));
 		detalle.setCicloCurso(cursoUpdate.getCiclo());
@@ -89,6 +95,7 @@ public class InscripcionesServiceImpl implements InscripcionesService{
 
 	@Override
 	public void reinscribirAlumno(Alumno al, TrayectoriaAcademica tya, Curso curso) {
+		System.out.println("METODO REINSCRIBIR DEL SERVICIO");
 		Alumno alumno=aluRep.findById(al.getId()).get();
 		Curso cursoUpdate=cursoRep.findBynombreCursoAndDivisionAndCicloAndTurno(curso.getNombreCurso(), curso.getDivision(), curso.getCiclo(), curso.getTurno());
 		tya.setCurso(cursoUpdate.getIdCurso());
@@ -99,6 +106,16 @@ public class InscripcionesServiceImpl implements InscripcionesService{
 		aluRep.save(alumno);
 		//Tabla de detalle
 		MateriaAlumnoCursoDetail detalle=new MateriaAlumnoCursoDetail();
+		Set<Materia>materiaNotas=new HashSet<Materia>();
+		materiaNotas.addAll(cursoUpdate.getPlanDeEstudios());
+		
+		System.out.println("Materia Set tamaño : "+materiaNotas.size());
+		for(Materia m:materiaNotas) {
+			System.out.println(m.getNombre());
+		}
+		
+		detalle.setMateriaNotas(materiaNotas);
+		detalle.setAnioLectivo(tya.getAnioLectivo());
 		detalle.setAlumno(al.getDni());
 		detalle.setAnioLectivo(tya.getFechaInscripcion().substring(0, 4));
 		detalle.setCicloCurso(cursoUpdate.getCiclo());
@@ -106,12 +123,6 @@ public class InscripcionesServiceImpl implements InscripcionesService{
 		detalle.setDivisionCurso(cursoUpdate.getDivision());
 		detalle.setTurno(cursoUpdate.getTurno());
 		detailRep.save(detalle);
-	}
-
-	@Override
-	public Alumno findAlumnoById(Integer id) {
-		Optional<Alumno> alumno=aluRep.findById(id);
-		return alumno.get();
 	}
 
 
@@ -126,6 +137,13 @@ public class InscripcionesServiceImpl implements InscripcionesService{
 		aluRep.save(alumno);
 		
 	}
+
+	@Override
+	public Set<Materia> getPlanEstudios(String curso, String ciclo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 

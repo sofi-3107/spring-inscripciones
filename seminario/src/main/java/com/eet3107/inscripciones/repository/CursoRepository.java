@@ -13,5 +13,6 @@ public interface CursoRepository extends CrudRepository<Curso,String>{
 
 public Curso findBynombreCursoAndDivisionAndCicloAndTurno(String nombreCurso,String division,String ciclo,Character character);
 
-public Set<Materia>findByIdCurso(String idCurso);
+
+
 }

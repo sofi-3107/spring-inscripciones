@@ -2,6 +2,10 @@
 
 $(document).ready(function(){
     
+	$('input').each(function(){
+		$(this).val('');
+	});
+	
     var fecha= new Date();
     var formatedDate= fecha.getFullYear+"-"+fecha.getDay+"-"+fecha.getMonth;
     console.log(formatedDate);
@@ -23,6 +27,7 @@ $(document).ready(function(){
     });
     
     //CHARTS
+    
     
     
     

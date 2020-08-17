@@ -1,8 +1,9 @@
 package com.eet3107.inscripciones.controllers;
 
+import java.util.Set;
+
 import javax.validation.Valid;
 
-import org.hibernate.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,13 +12,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eet3107.inscripciones.entity.Alumno;
 import com.eet3107.inscripciones.entity.Curso;
 import com.eet3107.inscripciones.entity.TrayectoriaAcademica;
+import com.eet3107.inscripciones.repository.AlumnoRepository;
 import com.eet3107.inscripciones.serviceimpl.InscripcionesServiceImpl;
+
+import xom.eet3107.inscripciones.auxiliar.CheckPreviousInscripciones;
 
 @Controller
 @RequestMapping("admin/")
@@ -25,6 +29,9 @@ public class AdministrativoController {
 	
 	@Autowired
 	InscripcionesServiceImpl servicio;
+
+	@Autowired
+	AlumnoRepository aluRep;
 	
 	@GetMapping("/")
 	public String getPanel(Model model) {
@@ -49,17 +56,33 @@ public class AdministrativoController {
 	@PostMapping("/inscripciones")
 	public String  inscribir(@ModelAttribute("alumno") @Valid Alumno alumno,BindingResult alumnoValid,
 			 @Valid @ModelAttribute("curso") Curso curso,BindingResult cursoValid,@Valid @ModelAttribute("trayectoria") TrayectoriaAcademica trayectoria,
-			 BindingResult trayValid) throws Exception {
+			 BindingResult trayValid,RedirectAttributes red) throws Exception {
+		
 		
 		if(alumnoValid.hasErrors()||cursoValid.hasErrors()||trayValid.hasErrors()) {
+			red.addAttribute("message","Ha ocurrido un error en la carga de los datos, Verifique abajo el detalle");
+			red.addAttribute("type","danger");
 			return "form";
 		}else {
 			if(alumno.getId()==null) {
 				servicio.inscribirAlumno(alumno, trayectoria, curso);
-				return "redirect:/admin/inscripciones?message=inscripto";
+				red.addAttribute("message","Alumno inscripto correctamente");
+				red.addAttribute("type","success");
+				return "redirect:/admin/inscripciones";
 			}else {
-				servicio.reinscribirAlumno(alumno, trayectoria, curso);;
-				return "redirect:/admin/inscripciones?message=reinscripto";
+				Set<TrayectoriaAcademica>inscripciones=aluRep.findByDni(alumno.getDni()).getInscripciones();
+				
+				if(CheckPreviousInscripciones.checkInCurrentYear(inscripciones,trayectoria.getFechaInscripcion().substring(0,4))) {
+					red.addAttribute("message","Alumno ya inscripto en el presente ciclo lectivo");
+					red.addAttribute("type","danger");
+					return "redirect:/admin/inscripciones";
+				}else {
+					servicio.reinscribirAlumno(alumno, trayectoria, curso);
+					red.addAttribute("message","Alumno reinscripto correctamente");
+					red.addAttribute("type","success");
+					return "redirect:/admin/inscripciones";
+				}
+
 			}
 			
 				
@@ -67,10 +90,7 @@ public class AdministrativoController {
 		}
 
 
-
-//			servicio.reinscribirAlumno(legajo, trayectoria);
-//			return "redirect:/admin/inscripciones";
-//		
+	
 
 	}
 

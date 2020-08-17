@@ -46,6 +46,9 @@ public class TrayectoriaAcademica {
 	@Column(length=5)
 	private String curso;
 	
+	@Column(length=4)
+	private String anioLectivo;
+	
 	@Column
 	@Size(max=15)
 	private String condicion;

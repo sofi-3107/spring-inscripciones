@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -37,6 +38,10 @@ public class Materia {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private TrayectoriaAcademica pendiente;
+	
+	
+	@ManyToMany(mappedBy="materiaNotas")
+	private Set<MateriaAlumnoCursoDetail> detalleAlumno;
 	
 	@OneToMany(mappedBy="materia",cascade=CascadeType.ALL)
 	private List<NotaTrimestral>notas;

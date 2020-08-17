@@ -21,9 +21,6 @@ public class NotaTrimestral  {
 @Id @GeneratedValue
 private Integer idNotas;
 
-@ManyToOne
-@JoinColumn(name="detalle_alumno")
-private MateriaAlumnoCursoDetail detalleAlumno;
 
 @ManyToOne
 @JoinColumn(name="id_materia")
