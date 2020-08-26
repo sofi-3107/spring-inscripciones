@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eet3107.inscripciones.entity.Curso;
+
 @Controller
 @RequestMapping("/directivo/")
 public class DirectivoController {
@@ -17,16 +19,16 @@ public class DirectivoController {
 		mav.addObject("titulo","Directora");
 		mav.addObject("optionTitle","Generar graficos");
 		mav.addObject("optionImg","graficos.jpg");
-		mav.addObject("optionTitle2","Consultar Legajo");
-		mav.addObject("optionImg2","consultaLegajo.png");
+		mav.addObject("url","/directivo/graficos");
 		return mav;
 	}
 	
 	
-	@GetMapping("/puta")
+	@GetMapping("/graficos")
 	public ModelAndView index () {
-		ModelAndView mav=new ModelAndView("index");
-		mav.addObject("titulo","PUTA");
+		ModelAndView mav=new ModelAndView("graficos");
+		mav.addObject("titulo","Graficos Estadisticos");
+		mav.addObject("curso",new Curso());
 		return mav;
 	}
 

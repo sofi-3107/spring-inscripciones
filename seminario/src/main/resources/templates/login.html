@@ -1,0 +1,46 @@
+<html lang="es">
+
+<head th:replace="fragments/fragmentos :: head">
+</head>
+
+<body>
+	I
+	<div class="main-container container-fluid">
+		<div th:insert="fragments/fragmentos::header"></div>
+	</div>
+	<!-- ENCABEZADO -->
+		<div th:replace="fragments/fragmentos :: alert(type=${type},message=${message})"></div>
+		<div class="row  body-container login-form justify-content-center">
+			<div class="col-3 formulario m-5 p-5">
+				<form th:object="${usuario}" action="#" th:action="${create}==1?@{/new}:@{/}" method="post">
+					<div class="form-group">
+						<label>Nombre de Usuario</label>
+						<input class="form-control" type="text" th:field="*{userName}">
+					</div>
+					
+					<div class="form-group">
+						<label>Contraseña</label>
+						<input class="form-control" type="password" th:field="*{password}">
+					</div>
+					<div class="form-group ">
+						<label for="rol">Rol</label> 
+							<select id="rol" class="form-control"th:field="*{rol}">
+								<option th:value=" directivo " th:text=" directivo "></option>
+								<option th:value=" preceptor " th:text=" preceptor "></option>
+								<option th:value=" administrativo " th:text=" administrativo "></option>
+							</select>
+					</div>
+					<div class="row justify-content-center"><button type="submit" th:text="${button}?${button}:${param.button}"class="btn-primary m-3 p-3">Ingresar</button></div>
+					<div th:if="${create}==0" class="row justify-content-center"><a th:href="@{/new}">¿No posee usuario ? Click para crear uno</a></div>
+					<div th:replace="fragments/fragmentos :: validation-ul"></div>
+				</form>
+					
+			</div>
+		</div>
+
+	
+	<!-- FOOTER -->
+<div th:replace="fragments/fragmentos::scripts"></div>
+</body>
+<footer th:replace="/fragments/fragmentos::footer"></footer>
+</html>

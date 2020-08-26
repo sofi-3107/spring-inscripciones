@@ -45,6 +45,16 @@ public class CheckPreviousInscripciones {
 	}
 	
 	
+	public static boolean isAlreadyinCurrentPeriod(Set<TrayectoriaAcademica>inscripciones,String anioLectivo) {
+		
+		for(TrayectoriaAcademica tya:inscripciones) {
+			tya.getAnioLectivo().equals(anioLectivo);
+			return true;
+		}
+		
+		return false;
+	}
+	
 	//Devuelve el id del ultimo curso en que se ha inscripto
 	//Como durante la inscripcion ya se controla que no se inscriba 2 veces el mismo año
 	//directamente buscamos el año anterior

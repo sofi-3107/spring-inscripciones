@@ -43,14 +43,10 @@ public class InscripcionesServiceImpl implements InscripcionesService{
 
 
 	@Override
-	public Integer getMaxAgeCurso(Curso curso) {
-		return curso.getEdadMax();
+	public Integer getMaxAgeCurso(String curso,String ciclo) {
+		return cursoRep.findBynombreCursoAndDivisionAndCicloAndTurno(curso, "1º", ciclo, 'M').getEdadMax();
 	}
 
-	@Override
-	public Integer getMaxCupo(Curso curso) {
-		return cursoRep.findById(curso.getIdCurso()).get().getCupoMax();
-	}
 
 
 
@@ -128,21 +124,38 @@ public class InscripcionesServiceImpl implements InscripcionesService{
 
 
 	@Override
-	public Integer getCantidadEnCurso(Curso curso, String fechaInscripcion) {
-		return trayectoriaRep.findAllByCursoAndFechaInscripcion(curso, fechaInscripcion).size();
-	}
-
-	@Override
-	public void testGuardarAlumno(Alumno alumno) {
-		aluRep.save(alumno);
-		
-	}
-
-	@Override
 	public Set<Materia> getPlanEstudios(String curso, String ciclo) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
+
+	@Override
+	public Integer getMaxCupo(String curso, String division, String ciclo, Character turno) {
+		return cursoRep.findAllBynombreCursoAndDivisionAndCicloAndTurno(curso, division, ciclo, turno).size();
+	}
+
+
+
+
+	@Override
+	public Boolean hayLugarenCurso(String nombreCurso, String division, String ciclo, Character turno,
+			String anioLectivo) {
+		int cupoMax=cursoRep.findBynombreCursoAndDivisionAndCicloAndTurno(nombreCurso, division, ciclo, turno).getEdadMax();
+		int cantExistente=detailRep.findByAnioLectivoAndNombreCursoAndDivisionCursoAndCicloCursoAndTurno(anioLectivo, nombreCurso, division, ciclo, turno).size();
+		
+		if(cantExistente<cupoMax) {
+			return true;
+		}else {
+			return false;
+		}		
+	}
+
+
+
+
 
 
 

@@ -14,9 +14,9 @@ public interface InscripcionesService {
 
 	Set<Materia> getPlanEstudios(String curso,String ciclo);
 
-	Integer getMaxAgeCurso(Curso  curso);
+	Integer getMaxAgeCurso(String  curso,String division);
 	
-	Integer getMaxCupo(Curso curso);
+	Integer getMaxCupo(String  curso,String division,String ciclo,Character turno);
 	
 	Alumno findAlumnoByDni(String dni);
 	
@@ -24,9 +24,9 @@ public interface InscripcionesService {
 	
 	void reinscribirAlumno( Alumno al,TrayectoriaAcademica tya,Curso curso);
 	
-	Integer getCantidadEnCurso(Curso curso,String fechaInscripcion);
+	Boolean hayLugarenCurso(String nombreCurso,String division,String ciclo,Character turno,String anioLectivo);
 	
-	void testGuardarAlumno(Alumno alumno);
+	
 	
 	
 

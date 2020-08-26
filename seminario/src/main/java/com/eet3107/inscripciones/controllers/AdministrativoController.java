@@ -72,7 +72,7 @@ public class AdministrativoController {
 			}else {
 				Set<TrayectoriaAcademica>inscripciones=aluRep.findByDni(alumno.getDni()).getInscripciones();
 				
-				if(CheckPreviousInscripciones.checkInCurrentYear(inscripciones,trayectoria.getFechaInscripcion().substring(0,4))) {
+				if(CheckPreviousInscripciones.isAlreadyinCurrentPeriod(inscripciones,trayectoria.getAnioLectivo())) {
 					red.addAttribute("message","Alumno ya inscripto en el presente ciclo lectivo");
 					red.addAttribute("type","danger");
 					return "redirect:/admin/inscripciones";
@@ -90,8 +90,17 @@ public class AdministrativoController {
 		}
 
 
+	}
 	
-
+	//UPDATE OR DELETE
+	
+	@GetMapping("/UpdateOrDelete")
+	
+	public String updateOrDelete(Model model) {	
+		model.addAttribute("alumno",new Alumno());
+		model.addAttribute("trayectoria",new TrayectoriaAcademica());
+		model.addAttribute("curso",new Curso());
+		return "delete-update";
 	}
 
 }

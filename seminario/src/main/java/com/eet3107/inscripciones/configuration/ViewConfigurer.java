@@ -41,7 +41,7 @@ public TemplateEngine templateEngine() {
 public ITemplateResolver templateResolver() {
     SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
     resolver.setApplicationContext(applicationContext);
-    resolver.setPrefix("classpath:/templates/");
+    resolver.setPrefix("classpath:templates/");
     resolver.setSuffix(".html");
     resolver.setTemplateMode(TemplateMode.HTML);
     resolver.setCharacterEncoding("UTF-8");

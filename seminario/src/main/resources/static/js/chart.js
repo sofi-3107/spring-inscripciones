@@ -1,40 +1,39 @@
 $(function(){
-   
-    // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});//importa la api
+	google.charts.load('current', {'packages':['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawStuff);
 
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
+    function drawStuff() {
 
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {
+      var button = document.getElementById('change-chart');
+      var chartDiv = document.getElementById('myChart');
 
-        // Create the data table. La ifnormacion bruta es una tabla
-        var data = new google.visualization.DataTable();
-        //data.addColumn('string', 'Repitencia');// primer parametro es el tipo de dato y el segundo el nombre de la columna
-        //data.addColumn('string', 'no repitentes');
-        data.addColumn('string','desaprobados materia');
-        data.addColumn('number','desaprobados');
-          
-        data.addRows([
-            ['Matematica', 13],
-            ['Lengua', 15],
-            ['Inglés', 12],
-            ['FEC', 5],
-            ['Dibujo Técnico I', 8],
-          
-        ]);
+      var data = google.visualization.arrayToDataTable([
+        ['Materias', 'Aprobados', 'Desaprobados'],
+        ['Matematica I', 20, 5],
+        ['Lengua I', 24, 1],
+        ['Dibujo Tecnico I', 10, 14],
+        ['Informatica I', 13, 3],
+        ['Taller de Electricidad ', 18, 5]
+      ]);
+      var classicOptions = {
+              width: 900,
+              series: {
+                0: {targetAxisIndex: 0},
+                1: {targetAxisIndex: 1}
+              },
+              title: 'Cantidad de Alumnos aprobados y desaprobados por materia',
+              vAxes: {
+                // Adds titles to each axis.
+                0: {title: 'aprobados'},
+                1: {title: 'desaprobados'}
+              }
+            };
 
-        // Set chart options
-        var options = {'title':'Desaprobados 1º1ºCS 1º Trimestre 2020',
-                       'width':1200,
-                       'height':900,
-                        is3D:true};
+      var classicChart = new google.visualization.ColumnChart(chartDiv);
+      classicChart.draw(data, classicOptions);
 
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.ColumnChart(document.getElementById('myChart'));
-        chart.draw(data, options);
-      }
+
+  };
+
+    
 });

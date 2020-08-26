@@ -1,0 +1,27 @@
+<html lang="es">
+
+<head th:replace="fragments/fragmentos :: head">
+</head>
+
+<body>
+	I
+	<div class="main-container container-fluid">
+		<div th:insert="fragments/fragmentos::header"></div>
+	</div>
+	<!-- HEADER -->
+		
+	<div class="row">
+		<div th:replace="fragments/dinamic :: buscar-lista"></div>
+		
+		<div class="col-lg-8 col-sm-12 px-5 align-middle w-100 h-100 px-4 body-container">
+	       <div class="mx-auto"style="width: 800px; height: 500px;" id="myChart" ></div>
+	    </div>
+	</div>
+	<!-- FOOTER -->
+<div th:replace="fragments/fragmentos::scripts"></div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+ 	
+ <script th:src="@{/js/chart.js}"></script>
+</body>
+<footer th:replace="/fragments/fragmentos::footer"></footer>
+</html>

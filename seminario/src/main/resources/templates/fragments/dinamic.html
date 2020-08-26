@@ -1,3 +1,5 @@
+
+<!-- Materias Pendientes -->
 <div th:fragment="pendientes">
 	<label for="pendientes">Condicion</label> 
 	<select class="form-control"th:field="${curso.turno}">
@@ -5,3 +7,103 @@
 		<option th:value="'T'" th:text="Tarde"></option>
 	</select>
 </div>
+<!-- Materias Pendientes -->
+<!-- LISTA DIVISIONES -->
+
+
+<select th:fragment="lista-divisiones" th:each="c : ${cursos}" id="division" class="form-control">
+	<option th:value="${c.division} " th:text="${c.division}"></option>
+</select>
+<								
+<!-- LISTA DIVISIONES-->
+<!-- Panel de busqueda Lista Alumno(directivo) -->
+               <div th:fragment="buscar-lista"class="col-lg-4 col-sm-12 p-5 ">
+                  <p class="h3 my-4">Ingrese el curso a consultar</p>
+                   <form action="#">
+                       <div id="curso-grupo" class="row justify-content-around">
+									<div class="form-group ">
+										<label for="curso">Curso</label>
+										 <select id="curso"class="form-control" th:field="${curso.nombreCurso}">
+											<option th:value=" '1º' " th:text=" '1º' "></option>
+											<option th:value=" '2º' " th:text=" '2º' "></option>
+											<option th:value=" '3º' " th:text=" '3º' "></option>
+											<option th:value=" '4º' " th:text=" '4º' "></option>
+										</select>
+									</div>
+									<div class="form-group ">
+										<label for="division">Division</label> 
+										<select id="division" class="form-control"th:field="${curso.division}">
+											<option th:value=" '1º' " th:text=" '1º' "></option>
+											<option th:value=" '2º' " th:text=" '2º' "></option>
+											<option th:value=" '3º' " th:text=" '3º' "></option>
+										</select>
+									</div>
+									<div class="form-group col-3">
+										<label for="ciclo">Ciclo </label> 
+										<select id="ciclo"class="form-control"th:field="${curso.ciclo}">
+											<option th:value="Basico" th:text="Básico"></option>
+											<option th:value="Superior" th:text="Superior"></option>
+										</select>
+									</div>
+									<div class="form-group col-3">
+										<label for="turno">Turno</label>
+										 <select id="turno"class="form-control"th:field="${curso.turno}">
+											<option th:value="'M'" th:text="Mañana"></option>
+											<option th:value="'T'" th:text="Tarde"></option>
+										</select>
+									</div>
+								</div>
+                        <div class="form-group">
+                            <label for="tipo-graf">Tipo de gráfico</label>                              
+                            <select class="form-control"name="tipo-graf" id="tipo-graf">
+                                <option value="1">Gráfico de barras de cantidad de aprobados y desaprobados </option>
+                                <option value="2">Gráfico circular de porcentaje de repitentes</option>
+                                <option value="2">Gráfico de barras de porcentaje de alumnos con sobreedad</option>
+                            </select>                              
+                        </div>                            
+                        <div class="btn btn-dark my-4">Consultar</div>     
+                   </form>
+               </div>
+               <!-- Panel de busqueda Lista Alumno(directivo) -->
+               
+               <!-- Tabla lista alumnos -->
+               
+               <div th:fragment="tabla-lista(alumnos,url-btn)"class="col-lg-8 col-sm-12  align-middle w-100 px-4 body-container">
+                  <div class="row justify-content-center">
+                    <p class="h1 text-center mt-5">Consultas</p>
+                    <img src="/img/buscar.png" class="img-mediana" alt="imagen buscar">
+                          <table class="tabla table">
+                            <thead class="thead-dark">
+                              <tr >
+                                <th>Apellido</th>
+                                <th>Nombre</th>
+                                <th>Dni</th>
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr th:each="alumno : $alumnos">
+                                <td th:text="alumno.apellido"></td>
+                                <td th:text="alumno.nombre">Doe</td>
+                                <td th:text="alumno.dni">john@example.com</td>
+                                <td><a href="@{${url-btn}}" class="btn btn-dark ">Ver</a></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div class="col-3 my-7 ">
+                              <ul class="pagination " >
+                                <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+                              </ul>
+                          </div>
+                        <div class="col-lg-1 col-sm-3 align-self-center m-5 ">
+                            <div class=" justify-content-center btn-salir text-center">
+                                <img class="img-fluid" src="/img/logout.png" alt="cerrar sesión">
+                                <p class="h3 text-dark">Salir</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
