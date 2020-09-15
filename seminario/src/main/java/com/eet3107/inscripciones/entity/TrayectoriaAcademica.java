@@ -43,8 +43,10 @@ public class TrayectoriaAcademica {
 	@JoinColumn(name="alumno_fk")
 	private Alumno alumno;
 	
-	@Column(length=5)
-	private String curso;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="curso_fk")
+	private Curso curso;
+	
 	
 	@Column(length=4)
 	private String anioLectivo;
@@ -53,7 +55,11 @@ public class TrayectoriaAcademica {
 	@Size(max=15)
 	private String condicion;
 	
-	// recupera el plan de estudios para mostrar listado de materias pero solo guarda 2
+	@Column
+	private Boolean isRepitente;
+	
+	@OneToMany(mappedBy="alumnoTyaFk",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	private List<Libreta>libretas;
 	
 	@OneToMany(mappedBy="pendiente" ,cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
 	List<Materia>pendientes; 

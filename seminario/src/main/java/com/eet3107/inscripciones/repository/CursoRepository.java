@@ -15,4 +15,5 @@ public List<Curso> findAllBynombreCursoAndDivisionAndCicloAndTurno(String nombre
 public List<Curso> findAllBynombreCursoAndCicloAndTurno(String nombreCurso,String ciclo,Character turno);
 
 
+
 }

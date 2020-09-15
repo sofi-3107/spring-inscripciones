@@ -1,6 +1,11 @@
 package com.eet3107.inscripciones.serviceimpl;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -10,11 +15,13 @@ import org.springframework.stereotype.Service;
 
 import com.eet3107.inscripciones.entity.Alumno;
 import com.eet3107.inscripciones.entity.Curso;
+import com.eet3107.inscripciones.entity.Libreta;
 import com.eet3107.inscripciones.entity.Materia;
 import com.eet3107.inscripciones.entity.MateriaAlumnoCursoDetail;
 import com.eet3107.inscripciones.entity.TrayectoriaAcademica;
 import com.eet3107.inscripciones.repository.AlumnoRepository;
 import com.eet3107.inscripciones.repository.CursoRepository;
+import com.eet3107.inscripciones.repository.LibretaRepository;
 import com.eet3107.inscripciones.repository.MateriaAlumnoCursoDetailRepository;
 import com.eet3107.inscripciones.repository.MateriaRepository;
 import com.eet3107.inscripciones.repository.TrayectoriaAcademicaRepository;
@@ -39,6 +46,9 @@ public class InscripcionesServiceImpl implements InscripcionesService{
 	
 	@Autowired
 	MateriaRepository materiaRep;
+	
+	@Autowired
+	LibretaRepository libretaRep;
 
 
 
@@ -57,35 +67,44 @@ public class InscripcionesServiceImpl implements InscripcionesService{
 
 	@Override
 	@Transactional
-	public void inscribirAlumno(Alumno al, TrayectoriaAcademica tya, Curso curso) throws Exception {			
+	public void inscribirAlumno(Alumno al, TrayectoriaAcademica tya, Curso curso) throws IOException {			
 		
-		Set<TrayectoriaAcademica>inscripciones=new HashSet<TrayectoriaAcademica>();	
-		aluRep.save(al);
-		System.out.println("Alumno: "+al.toString());
+		Set<TrayectoriaAcademica>inscripciones=new HashSet<TrayectoriaAcademica>();			
 		tya.setAlumno(al);		
+		System.out.println("Dentro del metodo inscribir antes de consultar el curso");
 		Curso cursoUpdate=cursoRep.findBynombreCursoAndDivisionAndCicloAndTurno(curso.getNombreCurso(), curso.getDivision(), curso.getCiclo(), curso.getTurno());
-		tya.setCurso(cursoUpdate.getIdCurso());
+		System.out.println("Contenido del curso que llega: "+curso.getNombreCurso()+" " +curso.getDivision()+" "+curso.getCiclo()+" "+curso.getTurno());
+		System.out.println("curso consultado nulo: " +cursoUpdate);
+		System.out.println("tya nulo?_" +tya==null);
+		tya.setCurso(cursoUpdate);		
 		trayectoriaRep.save(tya);
 		inscripciones.add(tya);
 		al.setInscripciones(inscripciones);	
+		System.out.println("Before saving alumno");
+		aluRep.save(al);
+		//Creacion de la libreta
+		Libreta libreta=new Libreta();
+		List<Materia>materiasLibreta=new ArrayList<Materia>();
+		System.out.println("Libreta es nulo: "+libreta==null);
+		List<Materia>planDeEstudios=cursoUpdate.getPlanDeEstudios();
+		System.out.println("Plan de estudios null?: "+planDeEstudios);
+		materiasLibreta.addAll(planDeEstudios);
+		libreta.setMaterias(materiasLibreta);
+		libreta.setAlumnoTyaFk(tya);
+		libreta.setAnioLectivo(tya.getAnioLectivo());
+		libreta.setCurso(cursoUpdate);
+		libretaRep.save(libreta);
+		
 		//Tabla de detalle
-		System.out.println("getCiclo: "+cursoUpdate.getCiclo());
-		MateriaAlumnoCursoDetail detalle=new MateriaAlumnoCursoDetail();
-		Set<Materia>materiaNotas=new HashSet<Materia>();
-		materiaNotas.addAll(cursoUpdate.getPlanDeEstudios());
-		System.out.println("Materia Set tamaño : "+materiaNotas.size());
-		for(Materia m:materiaNotas) {
-			System.out.println(m.getNombre());
-		}
-		detalle.setMateriaNotas(materiaNotas);
-		detalle.setAnioLectivo(tya.getAnioLectivo());
-		detalle.setAlumno(al.getDni());
-		detalle.setAnioLectivo(tya.getFechaInscripcion().substring(0, 4));
-		detalle.setCicloCurso(cursoUpdate.getCiclo());
-		detalle.setNombreCurso(cursoUpdate.getNombreCurso());
-		detalle.setDivisionCurso(cursoUpdate.getDivision());
-		detalle.setTurno(cursoUpdate.getTurno());
-		detailRep.save(detalle);
+//		MateriaAlumnoCursoDetail detalle=new MateriaAlumnoCursoDetail();
+//		detalle.setAnioLectivo(tya.getAnioLectivo());
+//		detalle.setAlumno(al.getDni());
+//		detalle.setCicloCurso(cursoUpdate.getCiclo());
+//		detalle.setIsRepitente(tya.getIsRepitente());
+//		detalle.setNombreCurso(cursoUpdate.getNombreCurso());
+//		detalle.setDivisionCurso(cursoUpdate.getDivision());
+//		detalle.setTurno(cursoUpdate.getTurno());
+//		detailRep.save(detalle);
 	}
 	
 
@@ -94,40 +113,37 @@ public class InscripcionesServiceImpl implements InscripcionesService{
 		System.out.println("METODO REINSCRIBIR DEL SERVICIO");
 		Alumno alumno=aluRep.findById(al.getId()).get();
 		Curso cursoUpdate=cursoRep.findBynombreCursoAndDivisionAndCicloAndTurno(curso.getNombreCurso(), curso.getDivision(), curso.getCiclo(), curso.getTurno());
-		tya.setCurso(cursoUpdate.getIdCurso());
+		tya.setCurso(cursoUpdate);
 		tya.setAlumno(alumno);
 		System.out.println("Antes de persistir tray: "+alumno.toString());
 		trayectoriaRep.save(tya);
 		alumno.getInscripciones().add(tya);
 		aluRep.save(alumno);
+		
+		//Creacion de la libreta
+		Libreta libreta=new Libreta();
+		List<Materia>materiasLibreta=new ArrayList<Materia>();
+		materiasLibreta.addAll(cursoUpdate.getPlanDeEstudios());
+		libreta.setMaterias(materiasLibreta);
+		libreta.setAlumnoTyaFk(tya);
+		libreta.setCurso(cursoUpdate);
+		libreta.setAnioLectivo(tya.getAnioLectivo());
+		libretaRep.save(libreta);
 		//Tabla de detalle
-		MateriaAlumnoCursoDetail detalle=new MateriaAlumnoCursoDetail();
-		Set<Materia>materiaNotas=new HashSet<Materia>();
-		materiaNotas.addAll(cursoUpdate.getPlanDeEstudios());
-		
-		System.out.println("Materia Set tamaño : "+materiaNotas.size());
-		for(Materia m:materiaNotas) {
-			System.out.println(m.getNombre());
-		}
-		
-		detalle.setMateriaNotas(materiaNotas);
-		detalle.setAnioLectivo(tya.getAnioLectivo());
-		detalle.setAlumno(al.getDni());
-		detalle.setAnioLectivo(tya.getFechaInscripcion().substring(0, 4));
-		detalle.setCicloCurso(cursoUpdate.getCiclo());
-		detalle.setNombreCurso(cursoUpdate.getNombreCurso());
-		detalle.setDivisionCurso(cursoUpdate.getDivision());
-		detalle.setTurno(cursoUpdate.getTurno());
-		detailRep.save(detalle);
+//		MateriaAlumnoCursoDetail detalle=new MateriaAlumnoCursoDetail();		
+//		detalle.setAnioLectivo(tya.getAnioLectivo());
+//		detalle.setAlumno(al.getDni());
+//		detalle.setAnioLectivo(tya.getFechaInscripcion().substring(0, 4));
+//		detalle.setCicloCurso(cursoUpdate.getCiclo());
+//		detalle.setIsRepitente(tya.getIsRepitente());
+//		detalle.setNombreCurso(cursoUpdate.getNombreCurso());
+//		detalle.setDivisionCurso(cursoUpdate.getDivision());
+//		detalle.setTurno(cursoUpdate.getTurno());
+//		detailRep.save(detalle);
 	}
 
 
 
-	@Override
-	public Set<Materia> getPlanEstudios(String curso, String ciclo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 
@@ -143,14 +159,45 @@ public class InscripcionesServiceImpl implements InscripcionesService{
 	@Override
 	public Boolean hayLugarenCurso(String nombreCurso, String division, String ciclo, Character turno,
 			String anioLectivo) {
-		int cupoMax=cursoRep.findBynombreCursoAndDivisionAndCicloAndTurno(nombreCurso, division, ciclo, turno).getEdadMax();
-		int cantExistente=detailRep.findByAnioLectivoAndNombreCursoAndDivisionCursoAndCicloCursoAndTurno(anioLectivo, nombreCurso, division, ciclo, turno).size();
-		
-		if(cantExistente<cupoMax) {
-			return true;
-		}else {
-			return false;
-		}		
+		Curso curso=cursoRep.findBynombreCursoAndDivisionAndCicloAndTurno(nombreCurso, division, ciclo, turno);
+		int cupoMax=curso.getCupoMax();
+		System.out.println("CupoMax recuperado: "+cupoMax);
+		int cantExistente=trayectoriaRep.findAllByCursoAndAnioLectivo(curso, anioLectivo).size();
+		System.out.println(cantExistente);
+		if(cantExistente==0) {
+			System.out.println("cantExistente: "+cantExistente);
+		}
+			if(cantExistente<cupoMax) {
+				return true;
+			}else {
+				return false;
+			}	
+			
+	}
+
+
+
+
+	@Override
+	public Map<String, List<Integer>> aprobadosDesaprobadosPorMateriaCurso(Curso curso,List<Materia> planDeEstudios,String anioLectivo,int trimestre) {
+		Map<String,List<Integer>>aprobadosDesaprobados=new HashMap<String,List<Integer>>();
+		for(Materia materia : planDeEstudios) {
+			List<Libreta> libretasMateria=libretaRep.findByCursoAndMateriasAndTrimestreAndAnioLectivo(curso, materia, trimestre, anioLectivo);
+			Integer aprobados=0;
+			Integer desaprobados=0;
+			for(Libreta libreta : libretasMateria) {
+				if(libreta.getCalificacion()<6) {
+					++aprobados;
+				}else {
+					++desaprobados;
+				}
+			}
+			List<Integer>aprobadosDesaprobadosDeMateria= new ArrayList<Integer>();
+			aprobadosDesaprobadosDeMateria.add(aprobados);
+			aprobadosDesaprobadosDeMateria.add(desaprobados);
+			aprobadosDesaprobados.put(materia.getNombre(), aprobadosDesaprobadosDeMateria);
+		}
+		return aprobadosDesaprobados;
 	}
 
 

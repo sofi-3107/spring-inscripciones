@@ -1,10 +1,17 @@
 <html lang="es">
 
 <head th:replace="fragments/fragmentos :: head">
+
 </head>
 
 <body>
-	I
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script> -->
+<!-- <script  type="text/javascript" th:src="@{/js/graficos.js}"></script> -->
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<!--  	<script  type="text/javascript" th:src="@{/js/chart.js}"></script> -->
+ 	<script  type="text/javascript" th:src="@{/js/chartAjax.js}"></script>
+ 	
+
 	<div class="main-container container-fluid">
 		<div th:insert="fragments/fragmentos::header"></div>
 	</div>
@@ -14,14 +21,12 @@
 		<div th:replace="fragments/dinamic :: buscar-lista"></div>
 		
 		<div class="col-lg-8 col-sm-12 px-5 align-middle w-100 h-100 px-4 body-container">
-	       <div class="mx-auto"style="width: 800px; height: 500px;" id="myChart" ></div>
+	       <div class="mx-auto"style="width: 700px; height: 600px" id="myChart" ></div>
 	    </div>
 	</div>
 	<!-- FOOTER -->
 <div th:replace="fragments/fragmentos::scripts"></div>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
- 	
- <script th:src="@{/js/chart.js}"></script>
+
 </body>
 <footer th:replace="/fragments/fragmentos::footer"></footer>
 </html>

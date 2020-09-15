@@ -1,5 +1,6 @@
 package com.eet3107.inscripciones.entity;
 
+
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -51,11 +52,15 @@ public class Alumno {
 	@NotEmpty(message="Debe escribir su fecha de nacimiento")
 	private String fechaNacimiento;
 	
+
+	
+	
 	@Column(length=8)
 	@Size(max=8,min=8,message="El dni debe tener 8 digitos sin puntos ")
 	@NotEmpty(message="Debe escribir su dni")
 	@Pattern(regexp="\\d+",message="Debe escribir en su dni solo los 8 números del mismo, sin puntos")// Esto \\d es digitos y el + q se puede repetir una o mas veces
 	private String dni;
+	
 	
 	
 	@OneToMany(mappedBy="alumno",fetch=FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval=true)

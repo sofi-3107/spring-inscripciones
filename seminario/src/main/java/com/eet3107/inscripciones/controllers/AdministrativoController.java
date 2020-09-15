@@ -1,5 +1,6 @@
 package com.eet3107.inscripciones.controllers;
 
+import java.io.IOException;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -21,7 +22,7 @@ import com.eet3107.inscripciones.entity.TrayectoriaAcademica;
 import com.eet3107.inscripciones.repository.AlumnoRepository;
 import com.eet3107.inscripciones.serviceimpl.InscripcionesServiceImpl;
 
-import xom.eet3107.inscripciones.auxiliar.CheckPreviousInscripciones;
+import xom.eet3107.inscripciones.auxiliar.CalculosDeFecha;
 
 @Controller
 @RequestMapping("admin/")
@@ -55,28 +56,42 @@ public class AdministrativoController {
 	
 	@PostMapping("/inscripciones")
 	public String  inscribir(@ModelAttribute("alumno") @Valid Alumno alumno,BindingResult alumnoValid,
-			 @Valid @ModelAttribute("curso") Curso curso,BindingResult cursoValid,@Valid @ModelAttribute("trayectoria") TrayectoriaAcademica trayectoria,
-			 BindingResult trayValid,RedirectAttributes red) throws Exception {
+			 @Valid @ModelAttribute("curso") Curso curso,/*BindingResult cursoValid,*/@Valid @ModelAttribute("trayectoria") TrayectoriaAcademica trayectoria,
+			 BindingResult trayValid,RedirectAttributes red,Model model) throws Exception{
 		
 		
-		if(alumnoValid.hasErrors()||cursoValid.hasErrors()||trayValid.hasErrors()) {
-			red.addAttribute("message","Ha ocurrido un error en la carga de los datos, Verifique abajo el detalle");
-			red.addAttribute("type","danger");
-			return "form";
+		if(alumnoValid.hasErrors()/*||cursoValid.hasErrors()*/||trayValid.hasErrors()) {
+			System.out.println("Controlador dentro de errores de validacion");
+			model.addAttribute("message","Ha ocurrido un error en la carga de los datos, Verifique abajo el detalle");
+			model.addAttribute("type","danger");
+			return "form";//decia return form
 		}else {
 			if(alumno.getId()==null) {
-				servicio.inscribirAlumno(alumno, trayectoria, curso);
-				red.addAttribute("message","Alumno inscripto correctamente");
-				red.addAttribute("type","success");
-				return "redirect:/admin/inscripciones";
+				System.out.println("Controlador dentro de inscribir");
+				try {
+					servicio.inscribirAlumno(alumno, trayectoria, curso);
+					red.addAttribute("message","Alumno inscripto correctamente");
+					red.addAttribute("type","success");
+					return "redirect:/admin/inscripciones";
+				} catch (IOException e) {
+					System.out.println("Controlador dentro de excepciones: "+e.getMessage());
+					System.out.println("null curso controller: "+curso==null);
+					System.out.println("null tya controller: "+trayectoria==null);
+					System.out.println("null alumno controller: "+alumno==null);					
+					red.addAttribute("message","Entro a la exception");
+					red.addAttribute("type","danger");
+					return "redirect:/admin/inscripciones";
+				}
+
 			}else {
 				Set<TrayectoriaAcademica>inscripciones=aluRep.findByDni(alumno.getDni()).getInscripciones();
 				
-				if(CheckPreviousInscripciones.isAlreadyinCurrentPeriod(inscripciones,trayectoria.getAnioLectivo())) {
+				if(CalculosDeFecha.isAlreadyinCurrentPeriod(inscripciones,trayectoria.getAnioLectivo())) {
 					red.addAttribute("message","Alumno ya inscripto en el presente ciclo lectivo");
 					red.addAttribute("type","danger");
 					return "redirect:/admin/inscripciones";
 				}else {
+					System.out.println("Controlador dentro de reinscribir");
 					servicio.reinscribirAlumno(alumno, trayectoria, curso);
 					red.addAttribute("message","Alumno reinscripto correctamente");
 					red.addAttribute("type","success");

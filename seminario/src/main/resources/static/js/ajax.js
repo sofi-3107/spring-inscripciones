@@ -1,7 +1,5 @@
 $(function(){
-	
-	
-	
+
 	/*Alumno reinscripto, trae los datos*/
 	var reinscripto=$('#reinscripto');
 	reinscripto.change(
@@ -37,27 +35,26 @@ $(function(){
 			 }
 	 );
 	/*Controla el cupo disponible en el curso*/
-	 if(division.val()!=''){
 	 $('#curso-grupo').change(function(){
+		 let division=$('#division').val();
 		 var anioLectivo=$('#anioLectivo');
-		 console.log('http://localhost:8080/api/getCantEnCurso/'+curso.val()+'/'+division.val()+'/'+ciclo.val()+'/'+turno.val()+'/'+anioLectivo.val());
-		 var url='http://localhost:8080/api/getCantEnCurso/'+curso.val()+'/'+division.val()+'/'+ciclo.val()+'/'+turno.val()+'/'+anioLectivo.val();
+		 console.log('http://localhost:8080/api/getCantEnCurso/'+curso.val()+'/'+division+'/'+ciclo.val()+'/'+turno.val()+'/'+anioLectivo.val());
+		 var url='http://localhost:8080/api/getCantEnCurso/'+curso.val()+'/'+division+'/'+ciclo.val()+'/'+turno.val()+'/'+anioLectivo.val();
 		 ajaxCantEnAula(url);
 	 });
-	 }
+	
 	 //Carga las divisones para el curso
 
-	 console.log(curso.val()+' '+ciclo.val()+' '+turno.val());
 	 var urlDiv='http://localhost:8080/api/getDivisiones/'+curso.val()+'/'+ciclo.val()+'/'+turno.val();
+	 $('#division').load(urlDiv);
 	 console.log(urlDiv);
 	$('.lista-divisiones').change(
 			function(){
-		$('#division').load(urlDiv);
-		
+		$('#division').load(urlDiv);		
 	}
 	);
 		
-	
+
 
 	
 	});//FIN AMBITO APLICACION
@@ -151,7 +148,7 @@ $(function(){
 		}
 		
 		function errorFoundByDni(xhr,status){
-			alert('xhr: '+status+'status: '+status);
+			alert('xhr: '+status+' status: '+status);
 		};
 		
 	function dateFormatter(cadena){

@@ -1,6 +1,6 @@
 package com.eet3107.inscripciones.repository;
 
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -12,4 +12,6 @@ import com.eet3107.inscripciones.entity.Materia;
 public interface MateriaRepository extends CrudRepository<Materia,Integer>{
 
 	
+	
+	public List<Materia>findByCurso(Curso curso);
 }

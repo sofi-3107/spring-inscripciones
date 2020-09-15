@@ -1,20 +1,23 @@
 package com.eet3107.inscripciones.entity;
 
-import java.util.List;
+
 import java.util.Set;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+
 
 import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,18 +36,25 @@ public class Materia {
 	@Length(max=30)
 	private String nombre;
 	
+
+
+	
+	@JsonIgnore
 	@ManyToMany
+	@JoinTable(
+			name="materia_curso",
+			joinColumns=@JoinColumn(name="id_materia"),
+			inverseJoinColumns=@JoinColumn(name="id_curso")
+			)
 	private Set<Curso> curso;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private TrayectoriaAcademica pendiente;
 	
 	
-	@ManyToMany(mappedBy="materiaNotas")
-	private Set<MateriaAlumnoCursoDetail> detalleAlumno;
+
 	
-	@OneToMany(mappedBy="materia",cascade=CascadeType.ALL)
-	private List<NotaTrimestral>notas;
+
 	
 
 

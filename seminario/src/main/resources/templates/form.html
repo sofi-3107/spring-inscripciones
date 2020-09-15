@@ -14,8 +14,11 @@
 			
 			<form th:object="${alumno}" th:action="@{/admin/inscripciones}" action="#"method="post">		
 						<!-- ALERTS -->
-		<div th:replace="fragments/fragmentos :: alert(type=${type},message=${message})"></div>
+		<div th:replace="fragments/fragmentos :: alertP(type=${type},message=${message})"></div>
 			<p class="h2 text-center my-4">Inscripción de Alumnos</p>
+			
+					<div th:replace="fragments/fragmentos :: alert(type=${type},message=${message})"></div>
+			
 			
 				<input id="id" th:field="*{id}" type="hidden">
 				<div class="form-row justify-content-around">
@@ -44,7 +47,7 @@
 					</div>
 					<div class="form-group col-3">
 						<label for="fechaInscripcion">Fecha de Inscripción</label>
-						 <input id="fechaInscripcion" th:value="${#dates.format(#dates.createNow(),'yyyy-MM-dd')}" th:field="${trayectoria.fechaInscripcion}"type="date" class="form-control">
+						 <input id="fechaInscripcion" th:value="${#dates.format(#dates.createNow(),'YYYY-MM-dd')}"th:field="${trayectoria.fechaInscripcion}"type="date" class="form-control">
 					</div>
 					<div class="row justify-content-around">
 								<div class="form-group ">
@@ -66,7 +69,7 @@
 									</div>
 									<div class="form-group ">
 										<label for="division">Division</label> 
-										<select id="division"class="form-control lista-divisiones" th:field="${curso.nombreCurso}">
+										<select id="division"class="form-control"th:field="${curso.division}">
 
 										</select>
 									</div>
@@ -93,9 +96,29 @@
 										<option th:value="Repitente" th:text="Repitente"></option>
 									</select>
 								</div>
-								<div id="pendientes" class="form-group col-4">
+						
+
+						<div id="pendientes" class="form-group col-4">
 								</div>
 					</div>
+						<div class="row justify-content-start mt-3">
+							<div class="form-check col-4">
+							<input th:field="${trayectoria.isRepitente}"
+								class="form-check-input" type="radio" name="repitente"
+								id="repitente-true" th:value="true" checked>
+								 <label
+								class="form-check-label" for="exampleRadios1"> Es
+								repitente </label>
+							</div>
+							<div class="form-check col-4">
+							<input th:field="${trayectoria.isRepitente}"
+								class="form-check-input" type="radio" name="exampleRadios"
+								id="repitente-false" th:value="false"> 
+								<label
+								class="form-check-label" for="exampleRadios2"> No es
+								repitente </label>
+							</div>
+						</div>
 				</div>
 					<div class="row justify-content-center mt-5">						
 								<input id="btn-inscribir"class="btn col-3 btn-primary"type="submit" value="enviar">							

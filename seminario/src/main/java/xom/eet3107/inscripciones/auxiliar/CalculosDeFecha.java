@@ -2,11 +2,13 @@ package xom.eet3107.inscripciones.auxiliar;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import com.eet3107.inscripciones.entity.Alumno;
+import com.eet3107.inscripciones.entity.Curso;
 import com.eet3107.inscripciones.entity.TrayectoriaAcademica;
+import com.eet3107.inscripciones.repository.CursoRepository;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,7 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 
-public class CheckPreviousInscripciones {
+public class CalculosDeFecha {
 
 	
 	
@@ -58,16 +60,16 @@ public class CheckPreviousInscripciones {
 	//Devuelve el id del ultimo curso en que se ha inscripto
 	//Como durante la inscripcion ya se controla que no se inscriba 2 veces el mismo año
 	//directamente buscamos el año anterior
-	public static String getCursoAnioLectivoAnterior(Set<TrayectoriaAcademica>inscripciones) {
+	public static Curso getCursoAnioLectivoAnterior(Set<TrayectoriaAcademica>inscripciones) {
 		Calendar fechaActual= Calendar.getInstance();		
 		String anioActual=Integer.toString(fechaActual.get(Calendar.YEAR)-1);
-		String idCurso="";
+		Curso curso=null;
 		for(TrayectoriaAcademica inscripcion:inscripciones) {
 			if(inscripcion.getFechaInscripcion().substring(0,4).equals(anioActual)) {
-				idCurso=inscripcion.getCurso();
+				curso=inscripcion.getCurso();
 			}
 		}
-		return idCurso;
+		return curso;
 	}
 	
 	//Busca la inscripcion de un alumno en un año en particular
@@ -80,6 +82,44 @@ public class CheckPreviousInscripciones {
 		}
 		return inscripcionBuscada;
 	}
+	
+	//CALCULAR EDAD, no es la edad actual. Es la edad hasta Junio 
+	//en el curso.
+	
+	public static int calcularEdadEnCurso(String fechaNacimiento) {
+		Calendar hoy=Calendar.getInstance();
+		
+		int anio=Integer.parseInt(fechaNacimiento.substring(0,4));
+		int mes=Integer.parseInt(fechaNacimiento.substring(5,7))-1;
+		int dia=Integer.parseInt(fechaNacimiento.substring(8,10));
+		
+		Calendar nac=Calendar.getInstance();
+		nac.set(anio, mes,dia);
+		int edad=hoy.get(Calendar.MONTH)+1-nac.get(Calendar.MONTH)+1;
+		if(nac.get(Calendar.MONTH)>6) {
+			++edad;
+		}		
+		return edad;
+	}
+	
+	//Recibe ya los alumnos del curso del año lectivo correspondiente
+	public static int[]cantidadSobreedadEnCurso(List<TrayectoriaAcademica> alumnosCurso,Curso curso){
+		int[]sobreedad=new int[2];
+		int cantSobreedad=0;
+		int edadIdeal=curso.getEdadIdeal();
+		int cantEdadNormal=alumnosCurso.size();
+		for(TrayectoriaAcademica alumno : alumnosCurso) {
+			if(calcularEdadEnCurso(alumno.getAlumno().getFechaNacimiento())>edadIdeal) {
+				++cantSobreedad;
+			}
+		}
+		cantEdadNormal=-cantSobreedad;
+		sobreedad[0]=cantSobreedad;
+		sobreedad[1]=cantEdadNormal;
+		return sobreedad;
+		
+	}
+	
 	
 	
 }

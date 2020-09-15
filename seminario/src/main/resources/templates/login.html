@@ -19,7 +19,7 @@
 					</div>
 					
 					<div class="form-group">
-						<label>Contraseña</label>
+						<label>Contrase&ntilde;a</label>
 						<input class="form-control" type="password" th:field="*{password}">
 					</div>
 					<div class="form-group ">
@@ -31,7 +31,7 @@
 							</select>
 					</div>
 					<div class="row justify-content-center"><button type="submit" th:text="${button}?${button}:${param.button}"class="btn-primary m-3 p-3">Ingresar</button></div>
-					<div th:if="${create}==0" class="row justify-content-center"><a th:href="@{/new}">¿No posee usuario ? Click para crear uno</a></div>
+					<div th:if="${create}==0" class="row justify-content-center"><a th:href="@{/new}">&iquest;No posee usuario ? Click para crear uno</a></div>
 					<div th:replace="fragments/fragmentos :: validation-ul"></div>
 				</form>
 					
